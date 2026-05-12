@@ -1,0 +1,151 @@
+---
+const links = [
+	{ href: "#filosofia", label: "Filosofía" },
+	{ href: "#horarios", label: "Horarios" },
+	{ href: "#eventos", label: "Eventos" },
+	{ href: "#contacto", label: "Contacto" },
+];
+---
+
+<header class="header">
+	<a href="/" class="brand" aria-label="Inicio — Judo Galápagos">
+		<span class="brand__mark" aria-hidden="true"></span>
+		<span class="brand__text">Judo<span class="brand__accent">Galápagos</span></span>
+	</a>
+	<nav class="nav" aria-label="Principal">
+		<ul class="nav__list">
+			{
+				links.map((l) => (
+					<li>
+						<a href={l.href} class="nav__link">
+							{l.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+	<a href="#contacto" class="cta-header">Contacto</a>
+</header>
+
+<style>
+	.header {
+		position: fixed;
+		inset: 0 0 auto 0;
+		z-index: 50;
+		height: var(--header-h);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-md);
+		padding: 0 clamp(1rem, 4vw, 3rem);
+		background: linear-gradient(to bottom, rgba(5, 5, 8, 0.92), rgba(5, 5, 8, 0.65), transparent);
+		backdrop-filter: blur(14px);
+		-webkit-backdrop-filter: blur(14px);
+		border-bottom: 1px solid transparent;
+		transition: border-color 0.35s var(--ease-out-expo), background 0.35s var(--ease-out-expo);
+	}
+
+	.header.is-scrolled {
+		border-bottom-color: var(--border-subtle);
+		background: rgba(5, 5, 8, 0.82);
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.65rem;
+		text-decoration: none;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 1.05rem;
+		letter-spacing: -0.02em;
+	}
+
+	.brand__mark {
+		width: 10px;
+		height: 10px;
+		border-radius: 2px;
+		background: linear-gradient(135deg, var(--accent), var(--ice));
+		box-shadow: 0 0 24px var(--accent-glow);
+	}
+
+	.brand__accent {
+		color: var(--accent);
+		margin-left: 2px;
+	}
+
+	.nav__list {
+		display: none;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		gap: 0.35rem;
+	}
+
+	@media (min-width: 880px) {
+		.nav__list {
+			display: flex;
+			align-items: center;
+		}
+	}
+
+	.nav__link {
+		display: inline-flex;
+		padding: 0.45rem 0.85rem;
+		border-radius: var(--radius-full);
+		font-size: 0.9rem;
+		font-weight: 500;
+		color: var(--text-muted);
+		text-decoration: none;
+		transition:
+			color 0.25s ease,
+			background 0.25s ease;
+	}
+
+	.nav__link:hover {
+		color: var(--text);
+		background: rgba(255, 255, 255, 0.06);
+	}
+
+	.cta-header {
+		flex-shrink: 0;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.55rem 1.15rem;
+		border-radius: var(--radius-full);
+		font-size: 0.88rem;
+		font-weight: 600;
+		text-decoration: none;
+		color: #fff;
+		background: linear-gradient(135deg, var(--accent), #c9183a);
+		box-shadow:
+			0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+			0 12px 40px -12px var(--accent-glow);
+		transition:
+			transform 0.25s var(--ease-out-expo),
+			box-shadow 0.25s ease;
+	}
+
+	.cta-header:hover {
+		transform: translateY(-1px);
+		box-shadow:
+			0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+			0 18px 48px -14px var(--accent-glow);
+	}
+
+	.cta-header:active {
+		transform: translateY(0);
+	}
+</style>
+
+<script>
+	const header = document.querySelector(".header");
+	const onScroll = () => {
+		if (!header) return;
+		header.classList.toggle("is-scrolled", window.scrollY > 24);
+	};
+	onScroll();
+	window.addEventListener("scroll", onScroll, { passive: true });
+</script>

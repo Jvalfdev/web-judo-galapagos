@@ -1,0 +1,199 @@
+<footer id="contacto" class="footer">
+	<div class="footer__grid">
+		<div class="footer__brand">
+			<p class="footer__logo">Judo<span>Galápagos</span></p>
+			<p class="footer__pitch">
+				Equilibrio entre fuerza y calma. Modernidad en cómo enseñamos; tradición en lo que defendemos.
+			</p>
+		</div>
+
+		<div class="footer__block">
+			<h3 class="footer__heading">Contacto</h3>
+			<ul class="footer__list">
+				<li><a href="mailto:hola@judogalapagos.example">hola@judogalapagos.example</a></li>
+				<li><a href="https://wa.me/34000000000" rel="noopener noreferrer">WhatsApp del club</a></li>
+				<li><span class="footer__muted">Instagram · próximamente</span></li>
+			</ul>
+		</div>
+
+		<div class="footer__block">
+			<h3 class="footer__heading">Dojo</h3>
+			<p class="footer__address">
+				Dirección por confirmar<br />
+				Islas Galápagos · Ecuador
+			</p>
+			<p class="footer__note">Sustituye correo, teléfono y dirección reales cuando los tengas.</p>
+		</div>
+
+		<div class="footer__cta">
+			<p class="footer__cta-label">Contacto</p>
+			<a href="mailto:hola@judogalapagos.example" class="footer__cta-btn">Escríbenos</a>
+			<p class="footer__fineprint">Respuesta habitual en 24–48 h.</p>
+		</div>
+	</div>
+
+	<div class="footer__bar">
+		<p class="footer__copy">© {new Date().getFullYear()} Club de Judo Galápagos</p>
+		<a href="#contenido-principal" class="footer__top">Volver arriba</a>
+	</div>
+</footer>
+
+<style>
+	.footer {
+		padding: var(--space-2xl) clamp(1rem, 5vw, 4rem) var(--space-lg);
+		border-top: 1px solid var(--border-subtle);
+		background:
+			radial-gradient(ellipse 80% 90% at 50% 120%, rgba(255, 51, 85, 0.14), transparent 58%),
+			#040406;
+	}
+
+	.footer__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: var(--space-xl);
+		align-items: start;
+		padding-bottom: var(--space-xl);
+		border-bottom: 1px solid var(--border-subtle);
+	}
+
+	.footer__logo {
+		margin: 0 0 var(--space-sm);
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 1.35rem;
+		letter-spacing: -0.022em;
+	}
+
+	.footer__logo span {
+		color: var(--accent);
+		margin-left: 4px;
+	}
+
+	.footer__pitch {
+		margin: 0;
+		max-width: 34ch;
+		font-size: 0.98rem;
+		color: var(--text-muted);
+		line-height: 1.55;
+	}
+
+	.footer__heading {
+		margin: 0 0 var(--space-sm);
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 0.82rem;
+		letter-spacing: 0.055em;
+		text-transform: uppercase;
+		color: rgba(244, 244, 245, 0.78);
+	}
+
+	.footer__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.45rem;
+		font-weight: 500;
+	}
+
+	.footer__list a {
+		text-decoration: none;
+		border-bottom: 1px solid transparent;
+		transition: border-color 0.2s ease, color 0.2s ease;
+	}
+
+	.footer__list a:hover {
+		color: var(--accent);
+		border-bottom-color: rgba(255, 51, 85, 0.35);
+	}
+
+	.footer__muted {
+		color: var(--text-muted);
+		font-size: 0.92rem;
+	}
+
+	.footer__address {
+		margin: 0 0 var(--space-sm);
+		font-style: normal;
+		line-height: 1.55;
+		color: rgba(244, 244, 245, 0.88);
+	}
+
+	.footer__note {
+		margin: 0;
+		font-size: 0.82rem;
+		color: var(--text-muted);
+		line-height: 1.45;
+	}
+
+	.footer__cta {
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		border: 1px solid rgba(255, 51, 85, 0.35);
+		background: linear-gradient(145deg, rgba(255, 51, 85, 0.14), rgba(255, 255, 255, 0.02));
+		box-shadow: 0 24px 70px -40px var(--accent-glow);
+	}
+
+	.footer__cta-label {
+		margin: 0 0 0.5rem;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.055em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+
+	.footer__cta-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.65rem 1.25rem;
+		border-radius: var(--radius-full);
+		font-weight: 700;
+		text-decoration: none;
+		color: #fff;
+		background: linear-gradient(135deg, var(--accent), #c9183a);
+		border: 1px solid rgba(255, 255, 255, 0.14);
+		transition:
+			transform 0.25s var(--ease-out-expo),
+			box-shadow 0.25s ease;
+	}
+
+	.footer__cta-btn:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 14px 40px -16px var(--accent-glow);
+	}
+
+	.footer__fineprint {
+		margin: 0.65rem 0 0;
+		font-size: 0.78rem;
+		color: var(--text-muted);
+	}
+
+	.footer__bar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-sm);
+		padding-top: var(--space-lg);
+		font-size: 0.82rem;
+		color: var(--text-muted);
+	}
+
+	.footer__copy {
+		margin: 0;
+	}
+
+	.footer__top {
+		text-decoration: none;
+		font-weight: 600;
+		color: rgba(244, 244, 245, 0.82);
+		transition: color 0.2s ease;
+	}
+
+	.footer__top:hover {
+		color: var(--accent);
+	}
+</style>

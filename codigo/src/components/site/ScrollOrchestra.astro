@@ -1,0 +1,16 @@
+---
+// Animaciones de scroll (GSAP). Sin UI.
+---
+
+<script>
+	import { initScrollOrchestra, destroyScrollOrchestra } from "../../scripts/scrollOrchestra";
+
+	function boot() {
+		queueMicrotask(() => initScrollOrchestra());
+	}
+
+	boot();
+
+	document.addEventListener("astro:before-swap", destroyScrollOrchestra);
+	document.addEventListener("astro:page-load", boot);
+</script>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" fill="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="g-shield" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a22"/>
+      <stop offset="100%" stop-color="#0a0a10"/>
+    </linearGradient>
+    <linearGradient id="g-accent" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#ff3355"/>
+      <stop offset="100%" stop-color="#c9183a"/>
+    </linearGradient>
+  </defs>
+  <!-- Escudo provisional: sustituye este archivo por el escudo real del club -->
+  <path fill="url(#g-shield)" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"
+        d="M60 6 L104 22 V62 Q104 102 60 132 Q16 102 16 62 V22 Z"/>
+  <circle cx="60" cy="52" r="22" stroke="url(#g-accent)" stroke-width="3.5" fill="none" opacity="0.95"/>
+  <path stroke="rgba(244,244,245,0.25)" stroke-width="2" stroke-linecap="round"
+        d="M48 72 Q60 82 72 72"/>
+  <rect x="42" y="88" width="36" height="5" rx="2" fill="url(#g-accent)" opacity="0.85"/>
+  <rect x="46" y="96" width="28" height="4" rx="2" fill="rgba(255,255,255,0.35)"/>
+</svg>

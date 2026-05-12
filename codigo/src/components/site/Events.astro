@@ -1,0 +1,139 @@
+<section id="eventos" class="section section--events" aria-labelledby="events-title">
+	<div class="section__head">
+		<p class="section__eyebrow">Agenda</p>
+		<h2 id="events-title" class="section__title">Próximos hitos</h2>
+		<p class="section__intro">
+			Campamentos, exámenes de cinturón y competiciones: mantén el ritmo y marca fechas con antelación.
+		</p>
+	</div>
+
+	<div class="bento">
+		<article class="tile tile--large">
+			<p class="tile__tag">Competición</p>
+			<h3 class="tile__title">Copa regional · kata y kumite</h3>
+			<p class="tile__meta"><time datetime="2026-06-21">21 junio 2026</time> · Información en el dojo</p>
+			<p class="tile__desc">
+				Seguimiento del equipo de competición y convocatoria para judokas federados con licencia al día.
+			</p>
+		</article>
+		<article class="tile">
+			<p class="tile__tag">Examen</p>
+			<h3 class="tile__title">Rodaje de cinturón</h3>
+			<p class="tile__meta"><time datetime="2026-07-05">5 julio 2026</time></p>
+			<p class="tile__desc">Lista cerrada una semana antes; consulta requisitos en el dojo.</p>
+		</article>
+		<article class="tile tile--accent">
+			<p class="tile__tag">Club</p>
+			<h3 class="tile__title">Convivencia familiar</h3>
+			<p class="tile__meta">Domingo por confirmar</p>
+			<p class="tile__desc">Tarde en el tatami + merienda. Trae tu mejor espíritu deportivo.</p>
+		</article>
+	</div>
+</section>
+
+<style>
+	.bento {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: 1rem;
+		align-items: stretch;
+	}
+
+	@media (min-width: 960px) {
+		.bento {
+			grid-template-columns: 2fr 1fr;
+			grid-template-rows: auto auto;
+		}
+
+		.tile--large {
+			grid-row: span 2;
+		}
+
+		.tile:not(.tile--large):last-child {
+			grid-column: 2;
+		}
+	}
+
+	.tile {
+		position: relative;
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border-subtle);
+		background: rgba(255, 255, 255, 0.025);
+		overflow: hidden;
+		transition: border-color 0.35s ease;
+	}
+
+	.tile:hover {
+		border-color: rgba(255, 255, 255, 0.14);
+	}
+
+	.tile--large {
+		min-height: 280px;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		background:
+			radial-gradient(ellipse 90% 80% at 80% 10%, rgba(255, 51, 85, 0.28), transparent 52%),
+			rgba(255, 255, 255, 0.03);
+	}
+
+	.tile--accent {
+		background:
+			linear-gradient(135deg, rgba(124, 240, 255, 0.06), transparent),
+			rgba(255, 255, 255, 0.025);
+	}
+
+	.tile__tag {
+		margin: 0 0 0.6rem;
+		display: inline-flex;
+		align-self: flex-start;
+		padding: 0.25rem 0.6rem;
+		border-radius: var(--radius-full);
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.045em;
+		text-transform: uppercase;
+		color: rgba(244, 244, 245, 0.85);
+		background: rgba(0, 0, 0, 0.35);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.tile__title {
+		margin: 0 0 0.45rem;
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 1.35rem;
+		line-height: 1.15;
+		letter-spacing: -0.022em;
+	}
+
+	.tile--large .tile__title {
+		font-size: clamp(1.45rem, 3vw, 2rem);
+	}
+
+	.tile__meta {
+		margin: 0 0 0.75rem;
+		font-size: 0.88rem;
+		font-weight: 600;
+		color: var(--accent);
+	}
+
+	.tile__desc {
+		margin: 0;
+		font-size: 0.94rem;
+		color: var(--text-muted);
+		line-height: 1.55;
+		max-width: 46ch;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.tile {
+			transition: none;
+		}
+
+		.tile:hover {
+			border-color: var(--border-subtle);
+		}
+	}
+</style>

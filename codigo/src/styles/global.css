@@ -1,0 +1,143 @@
+:root {
+	color-scheme: dark;
+	--bg-deep: #050508;
+	--bg-elevated: #0e0e12;
+	--bg-card: rgba(255, 255, 255, 0.03);
+	--border-subtle: rgba(255, 255, 255, 0.08);
+	--text: #f4f4f5;
+	--text-muted: rgba(244, 244, 245, 0.62);
+	--accent: #ff3355;
+	--accent-soft: rgba(255, 51, 85, 0.15);
+	--accent-glow: rgba(255, 51, 85, 0.45);
+	--ice: #7cf0ff;
+	--radius-lg: 20px;
+	--radius-full: 999px;
+	--font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+	--font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+	--space-xs: 0.5rem;
+	--space-sm: 1rem;
+	--space-md: 1.5rem;
+	--space-lg: 2.5rem;
+	--space-xl: 4rem;
+	--space-2xl: 6rem;
+	--header-h: 4.25rem;
+	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
+
+body {
+	margin: 0;
+	min-height: 100dvh;
+	font-family: var(--font-body);
+	font-size: 1.02rem;
+	line-height: 1.58;
+	letter-spacing: -0.015em;
+	font-feature-settings: "kern" 1;
+	color: var(--text);
+	background: var(--bg-deep);
+	-webkit-font-smoothing: antialiased;
+}
+
+img,
+video {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+a {
+	color: inherit;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+}
+
+.skip-link {
+	position: absolute;
+	left: -999px;
+	top: 0;
+	padding: 0.5rem 1rem;
+	background: var(--accent);
+	color: #fff;
+	z-index: 9999;
+}
+
+.skip-link:focus {
+	left: 0;
+}
+
+/* Bloques de sección compartidos */
+.section {
+	position: relative;
+	padding: var(--space-2xl) clamp(1rem, 5vw, 4rem);
+	border-top: 1px solid var(--border-subtle);
+}
+
+.section__head {
+	max-width: 640px;
+	margin-bottom: var(--space-xl);
+}
+
+.section__eyebrow {
+	margin: 0 0 0.5rem;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.055em;
+	text-transform: uppercase;
+	color: var(--accent);
+}
+
+.section__title {
+	margin: 0 0 var(--space-sm);
+	font-family: var(--font-display);
+	font-weight: 800;
+	font-size: clamp(1.85rem, 4vw, 3rem);
+	line-height: 1.06;
+	letter-spacing: -0.03em;
+}
+
+.section__intro {
+	margin: 0;
+	font-size: 1.08rem;
+	color: var(--text-muted);
+	line-height: 1.65;
+}
+
+.section--philosophy {
+	background:
+		radial-gradient(ellipse 70% 55% at 100% 0%, rgba(255, 51, 85, 0.06), transparent 55%),
+		var(--bg-deep);
+}
+
+.section--schedule {
+	background:
+		radial-gradient(ellipse 55% 50% at 0% 100%, rgba(124, 240, 255, 0.06), transparent 55%),
+		var(--bg-elevated);
+}
+
+.section--events {
+	background: var(--bg-deep);
+}

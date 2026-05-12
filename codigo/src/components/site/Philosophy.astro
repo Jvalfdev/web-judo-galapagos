@@ -1,0 +1,111 @@
+<section id="filosofia" class="section section--philosophy" aria-labelledby="philosophy-title">
+	<div class="section__head">
+		<p class="section__eyebrow">Filosofía</p>
+		<h2 id="philosophy-title" class="section__title">El tatami es un espejo.</h2>
+		<p class="section__intro">
+			El judo no es solo deporte de contacto: es método para ganar confianza, orden y empatía. Aquí entrenamos fuerte, con técnica y con límites claros.
+		</p>
+	</div>
+
+	<ul class="cards">
+		<li class="card">
+			<span class="card__icon" aria-hidden="true">01</span>
+			<h3 class="card__title">Respeto primero</h3>
+			<p class="card__text">Saludo, normas y escucha activa. Sin respeto no hay progreso real.</p>
+		</li>
+		<li class="card">
+			<span class="card__icon" aria-hidden="true">02</span>
+			<h3 class="card__title">Caídas seguras</h3>
+			<p class="card__text">Ukemis y base física para moverte con control y confianza.</p>
+		</li>
+		<li class="card">
+			<span class="card__icon" aria-hidden="true">03</span>
+			<h3 class="card__title">Progreso medible</h3>
+			<p class="card__text">Objetivos por etapa: técnica, condición y mentalidad de equipo.</p>
+		</li>
+		<li class="card">
+			<span class="card__icon" aria-hidden="true">04</span>
+			<h3 class="card__title">Competición opcional</h3>
+			<p class="card__text">Si te gusta competir, aquí tienes estructura y acompañamiento.</p>
+		</li>
+	</ul>
+</section>
+
+<style>
+	.cards {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1rem;
+	}
+
+	.card {
+		position: relative;
+		padding: var(--space-md) var(--space-md) var(--space-lg);
+		border-radius: var(--radius-lg);
+		background: var(--bg-card);
+		border: 1px solid var(--border-subtle);
+		overflow: hidden;
+		transition:
+			transform 0.35s var(--ease-out-expo),
+			border-color 0.35s ease,
+			box-shadow 0.35s ease;
+	}
+
+	.card::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(145deg, rgba(255, 51, 85, 0.09), transparent 42%);
+		opacity: 0;
+		transition: opacity 0.35s ease;
+		pointer-events: none;
+	}
+
+	.card:hover {
+		border-color: rgba(255, 255, 255, 0.14);
+		box-shadow: 0 24px 60px -36px rgba(0, 0, 0, 0.85);
+	}
+
+	.card:hover::before {
+		opacity: 1;
+	}
+
+	.card__icon {
+		display: inline-flex;
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 0.85rem;
+		letter-spacing: 0.035em;
+		color: var(--accent);
+		opacity: 0.85;
+		margin-bottom: var(--space-sm);
+	}
+
+	.card__title {
+		margin: 0 0 0.5rem;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 1.15rem;
+		letter-spacing: -0.018em;
+	}
+
+	.card__text {
+		margin: 0;
+		font-size: 0.95rem;
+		color: var(--text-muted);
+		line-height: 1.55;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.card {
+			transition: none;
+		}
+
+		.card:hover {
+			transform: none;
+		}
+	}
+</style>
