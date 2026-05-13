@@ -1,0 +1,5 @@
+{
+	"name": "web-judo-galapagos",
+	"private": true,
+	"description": "Raíz del repo para Vercel; la web Astro está en codigo/"
+}
