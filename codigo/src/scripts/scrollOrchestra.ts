@@ -94,6 +94,64 @@ export function initScrollOrchestra(): void {
 			});
 		}
 
+		/* ---------- Últimas noticias (portada) ---------- */
+		const ultimas = document.querySelector<HTMLElement>("#ultimas-noticias");
+		if (ultimas) {
+			const head = ultimas.querySelector<HTMLElement>(".section__head--news");
+			const cards = gsap.utils.toArray<HTMLElement>(
+				ultimas.querySelectorAll(".news-card"),
+			);
+
+			if (head) {
+				gsap.set(head, {
+					opacity: 0,
+					y: 52,
+					filter: "blur(12px)",
+				});
+			}
+			gsap.set(cards, {
+				opacity: 0,
+				y: 72,
+				scale: 0.94,
+			});
+
+			const tlUltimas = gsap.timeline({
+				scrollTrigger: {
+					trigger: ultimas,
+					start: "top 78%",
+					toggleActions: "play none none none",
+				},
+			});
+
+			if (head) {
+				tlUltimas.to(head, {
+					opacity: 1,
+					y: 0,
+					filter: "blur(0px)",
+					duration: 0.95,
+					ease: easeOut,
+				});
+			}
+
+			tlUltimas.to(
+				cards,
+				{
+					opacity: 1,
+					y: 0,
+					scale: 1,
+					duration: 0.85,
+					stagger: { each: 0.09, from: "start" },
+					ease: easeSnap,
+				},
+				head ? "-=0.5" : 0,
+			);
+
+			tlUltimas.eventCallback("onComplete", () => {
+				if (head) gsap.set(head, { clearProps: "transform,filter" });
+				if (cards.length) gsap.set(cards, { clearProps: "transform,filter" });
+			});
+		}
+
 		/* ---------- Filosofía ---------- */
 		const filosofia = document.querySelector<HTMLElement>("#filosofia");
 		if (filosofia) {

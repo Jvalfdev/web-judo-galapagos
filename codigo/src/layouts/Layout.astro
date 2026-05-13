@@ -2,7 +2,9 @@
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import IntroSplash from "../components/site/IntroSplash.astro";
+import logoSplash from "../assets/logo mas detallago.jpg";
 import ScrollOrchestra from "../components/site/ScrollOrchestra.astro";
+import WhatsAppFloat from "../components/site/WhatsAppFloat.astro";
 
 interface Props {
 	title?: string;
@@ -10,9 +12,9 @@ interface Props {
 }
 
 const {
-	title = "Judo Galápagos — Club de judo moderno",
+	title = "Club de Judo Galápagos",
 	description =
-		"Club de judo en Galápagos: formación técnica, valores y equipo de competición. Horarios, eventos y contacto.",
+		"Club de judo en Galápagos (Guadalajara): horarios, noticias, calendario e información del club.",
 } = Astro.props;
 ---
 
@@ -35,6 +37,11 @@ const {
 		<ClientRouter />
 		<script is:inline>
 			try {
+				if (localStorage.getItem("jg-theme") === "dark") {
+					document.documentElement.setAttribute("data-theme", "dark");
+				}
+			} catch (e) {}
+			try {
 				if (sessionStorage.getItem("jg-splash-seen") === "1") {
 					document.documentElement.classList.add("jg-no-splash");
 				}
@@ -42,9 +49,52 @@ const {
 		</script>
 	</head>
 	<body>
-		<IntroSplash />
+		<IntroSplash logoSrc={logoSplash.src} />
 		<a class="skip-link" href="#contenido-principal">Saltar al contenido</a>
 		<slot />
+		<WhatsAppFloat />
 		<ScrollOrchestra />
+		<script is:inline>
+			(function () {
+				if (window.__jgThemeBound) return;
+				window.__jgThemeBound = true;
+
+				function syncThemeToggleUi() {
+					var btn = document.querySelector("[data-theme-toggle]");
+					if (!btn) return;
+					var dark = document.documentElement.getAttribute("data-theme") === "dark";
+					btn.setAttribute("aria-label", dark ? "Activar modo claro" : "Activar modo oscuro");
+					btn.setAttribute("title", dark ? "Modo claro" : "Modo oscuro");
+				}
+
+				document.addEventListener(
+					"click",
+					function (e) {
+						var target = e.target;
+						if (!(target instanceof Element)) return;
+						var btn = target.closest("[data-theme-toggle]");
+						if (!btn) return;
+						e.preventDefault();
+						var html = document.documentElement;
+						if (html.getAttribute("data-theme") === "dark") {
+							html.removeAttribute("data-theme");
+							try {
+								localStorage.setItem("jg-theme", "light");
+							} catch (err) {}
+						} else {
+							html.setAttribute("data-theme", "dark");
+							try {
+								localStorage.setItem("jg-theme", "dark");
+							} catch (err) {}
+						}
+						syncThemeToggleUi();
+					},
+					true,
+				);
+
+				document.addEventListener("astro:page-load", syncThemeToggleUi);
+				syncThemeToggleUi();
+			})();
+		</script>
 	</body>
 </html>

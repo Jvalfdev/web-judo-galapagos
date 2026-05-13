@@ -1,0 +1,98 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { Image } from "astro:assets";
+import fotoInstalaciones from "../assets/instalaciones.jpg";
+import fotoInstalaciones2 from "../assets/instalaciones 2.jpg";
+---
+
+<PageLayout
+	title="Instalaciones"
+	description="Instalaciones del Club de Judo Galápagos: silo municipal cedido por el Ayuntamiento de Galápagos (C. del Silo, 2, Galápagos)."
+>
+	<div class="page-shell page-shell--wide">
+		<header class="page-hero">
+			<p class="page-hero__eyebrow">Espacio</p>
+			<h1 class="page-hero__title">Nuestras instalaciones</h1>
+			<p class="page-hero__lead">
+				Nuestras instalaciones son el <strong>silo municipal</strong>, cedido por el{' '}
+				<strong>Ayuntamiento de Galápagos</strong>, donde el club dispone de un espacio adecuado para la
+				práctica sobre tatami y la preparación del equipo en vestuarios compartidos con otros usuarios del
+				edificio. La sede del espacio es{' '}
+				<strong>C. del Silo, 2 · 19174 Galápagos, Guadalajara</strong>. Aquí reunimos fotografías del
+				recinto y las normas de uso y convivencia que aplicamos para respetar el horario municipal y al resto
+				de grupos del centro.
+			</p>
+		</header>
+
+		<section class="page-block">
+			<h2>Galería</h2>
+			<p class="inst-gallery__intro">
+				Vistas del tatami y del entorno del silo municipal.
+			</p>
+			<div class="inst-gallery">
+				<figure class="inst-gallery__item">
+					<Image
+						src={fotoInstalaciones}
+						alt="Instalaciones del club: vista del tatami y el espacio de entrenamiento"
+						class="inst-gallery__img"
+						sizes="(min-width: 720px) 45vw, 92vw"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+				<figure class="inst-gallery__item">
+					<Image
+						src={fotoInstalaciones2}
+						alt="Segunda vista de las instalaciones del silo"
+						class="inst-gallery__img"
+						sizes="(min-width: 720px) 45vw, 92vw"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</div>
+		</section>
+
+		<section class="page-block">
+			<h2>Normas de uso</h2>
+			<ul class="page-list">
+				<li>Respeto al horario municipal y a otros grupos que compartan el espacio.</li>
+				<li>Limpieza del tatami y del material común al terminar.</li>
+				<li>Calzado solo en zonas permitidas; judogi limpio.</li>
+			</ul>
+		</section>
+	</div>
+</PageLayout>
+
+<style>
+	.inst-gallery__intro {
+		margin: 0 0 var(--space-md);
+		max-width: 54rem;
+		line-height: 1.55;
+		color: var(--text-muted);
+		font-size: 0.98rem;
+	}
+
+	.inst-gallery {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: var(--space-md);
+		margin-top: var(--space-sm);
+	}
+
+	.inst-gallery__item {
+		margin: 0;
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		border: 1px solid var(--border-subtle);
+		background: var(--cal-card-bg);
+		box-shadow: 0 20px 56px -38px rgba(0, 0, 0, 0.35);
+	}
+
+	.inst-gallery__img {
+		display: block;
+		width: 100%;
+		height: auto;
+		vertical-align: middle;
+	}
+</style>

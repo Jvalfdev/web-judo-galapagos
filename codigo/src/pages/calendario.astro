@@ -1,0 +1,51 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import ClubCalendar from "../components/site/ClubCalendar.astro";
+import { getEntradasCalendarioOrdenadas } from "../data/calendario";
+
+const items = getEntradasCalendarioOrdenadas();
+---
+
+<PageLayout
+	title="Calendario del club"
+	description="Calendario de competiciones, exámenes y eventos del Club de Judo Galápagos."
+>
+	<div class="page-shell page-shell--wide">
+		<header class="page-hero">
+			<p class="page-hero__eyebrow">Agenda</p>
+			<h1 class="page-hero__title">Calendario del club</h1>
+			<p class="page-hero__lead">
+				Navega por mes o por año: los días con actividad se marcan en la cuadrícula; debajo ves solo los
+				eventos del mes seleccionado. En vista anual, la lista agrupa todo lo previsto en ese año.
+			</p>
+		</header>
+
+		<p class="cal-meta">
+			Las fechas definitivas dependen de federación y organizadores; revisa también las{' '}
+			<a href="/noticias">noticias</a> y los carteles en el dojo.
+		</p>
+
+		<ClubCalendar items={items} />
+	</div>
+</PageLayout>
+
+<style>
+	.cal-meta {
+		margin: 0 0 var(--space-xl);
+		font-size: 0.95rem;
+		color: var(--text-muted);
+		line-height: 1.55;
+		max-width: 52ch;
+	}
+
+	.cal-meta a {
+		color: var(--ice);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.cal-meta a:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+</style>

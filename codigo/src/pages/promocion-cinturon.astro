@@ -1,0 +1,449 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { Image } from "astro:assets";
+import fotoPromoA from "../assets/1000050563.jpg";
+import fotoPromoB from "../assets/1000050564.jpg";
+
+const altPromoA = "Judokas en el tatami durante una sesión del club";
+const altPromoB = "Práctica de judo en grupo";
+---
+
+<PageLayout
+	title="Promoción de cinturón"
+	description="Cómo funciona la promoción de grado (kyū y dan) en judo: preparación en el club, rodajes y examen federativo."
+>
+	<div class="page-shell page-shell--wide">
+		<header class="page-hero">
+			<p class="page-hero__eyebrow">Progresión</p>
+			<h1 class="page-hero__title">Promoción de cinturón</h1>
+			<p class="page-hero__lead">
+				Subir de cinturón en judo no es solo cambiar de color: es demostrar que has asimilado un bloque de
+				técnica, que te comportas con seguridad en el tatami y que llevas tiempo consolidando lo aprendido.
+				En esta página resumimos cómo suele organizarse ese camino; los requisitos exactos (tiempos,
+				katas u obligatorios) los marca siempre la federación y las convocatorias oficiales.
+			</p>
+		</header>
+
+		<div class="promo-gallery">
+			<figure class="promo-gallery__item">
+				<button
+					type="button"
+					class="promo-gallery__trigger"
+					data-promo-lightbox-open
+					data-full-src={fotoPromoA.src}
+					data-img-alt={altPromoA}
+					aria-label={`Ampliar: ${altPromoA}`}
+				>
+					<Image
+						src={fotoPromoA}
+						alt={altPromoA}
+						class="promo-gallery__img"
+						sizes="(min-width: 768px) min(46vw, 520px), 100vw"
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					/>
+				</button>
+			</figure>
+			<figure class="promo-gallery__item">
+				<button
+					type="button"
+					class="promo-gallery__trigger"
+					data-promo-lightbox-open
+					data-full-src={fotoPromoB.src}
+					data-img-alt={altPromoB}
+					aria-label={`Ampliar: ${altPromoB}`}
+				>
+					<Image
+						src={fotoPromoB}
+						alt={altPromoB}
+						class="promo-gallery__img"
+						sizes="(min-width: 768px) min(46vw, 520px), 100vw"
+						loading="eager"
+						decoding="async"
+					/>
+				</button>
+			</figure>
+		</div>
+
+		<section class="page-block">
+			<h2>Qué se valora al promocionar</h2>
+			<p>
+				En la mayoría de escuelas y federaciones se combinan varias cosas: dominio de los caídas (ukemi),
+				técnica de agarre y desplazamiento, lanzamientos (<em>nage-waza</em>), trabajo en el suelo
+				(<em>katame-waza</em>), capacidad para practicar <em>randori</em> (combate de práctica) con control y
+				respeto, y una actitud acorde al código moral del judo. En grados altos entran también formas
+				(<em>kata</em>) y, cuando corresponde, trayectoria en competición o apoyo en el dojo.
+			</p>
+			<p>
+				No existe un “truco” universal: cada federación publica programas de examen con técnicas obligatorias,
+				número mínimo de entrenamientos o tiempo entre examen y examen. El papel del club es prepararte,
+				corregirte y proponerte para la convocatoria cuando el maestro, como dirección técnica,
+				ve que estás listo.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Cómo suele organizarse el proceso</h2>
+			<ol class="promo-steps">
+				<li>
+					<strong>Entrenamiento continuado.</strong> La base es la asistencia regular y la práctica con
+					intención: repetir bien antes de repetir mucho.
+				</li>
+				<li>
+					<strong>Rodajes.</strong> Son sesiones previas al examen donde se simulan condiciones parecidas a
+					la prueba oficial: calentamiento, técnica exigida y, a veces, combates cortos. Ayudan a quitar
+					nervios y a detectar qué falta pulir.
+				</li>
+				<li>
+					<strong>Examen oficial.</strong> Lo convoca la federación (o delegación); suele incluir prueba
+					técnica, quizá teoría o condición física según el grado, y el juicio de un tribunal homologado.
+				</li>
+				<li>
+					<strong>Nuevo cinturón.</strong> Tras aprobar, se registra el grado y puedes seguir el siguiente
+					tramo de aprendizaje con objetivos nuevos.
+				</li>
+			</ol>
+		</section>
+
+		<section class="belt-section page-block">
+			<h2>Cinturones de color (kyū)</h2>
+			<p>
+				La progresión por colores es orientativa y puede variar según edad (infantil / cadete / adulto) y
+				reglamento territorial. Lo habitual es ir del blanco hacia el marrón antes del negro, ganando en
+				exigencia técnica y en responsabilidad dentro del grupo.
+			</p>
+			<ul class="belt-cards">
+				<li class="belt-card">
+					<h3>Blanco · iniciación</h3>
+					<p>
+						Fundamentos: saludos (<em>rei</em>), caídas hacia delante y atrás, desplazamientos, primeros
+						agarres y ukemis sencillos. Objetivo: moverse con seguridad y entender las reglas del tatami.
+					</p>
+				</li>
+				<li class="belt-card">
+					<h3>Amarillo · bases</h3>
+					<p>
+						Ampliación de <em>nage-waza</em> de iniciación, nociones de control en el suelo y primeros
+						ejercicios de <em>randori</em> muy guiado. Se refuerza la disciplina y el compañerismo.
+					</p>
+				</li>
+				<li class="belt-card">
+					<h3>Naranja · consolidación</h3>
+					<p>
+						Más variedad de lanzamientos y transiciones pie–suelo; <em>randori</em> un poco más libre con
+						supervisión. Se espera mayor autonomía al calentar y al aplicar técnica corregida.
+					</p>
+				</li>
+				<li class="belt-card">
+					<h3>Verde · fluidez</h3>
+					<p>
+						Combinaciones sencillas, defensa de derribos básicos y trabajo en <em>ne-waza</em> más
+						estructurado. Suele exigirse mejor lectura del combate y uso correcto del espacio.
+					</p>
+				</li>
+				<li class="belt-card">
+					<h3>Azul · profundidad</h3>
+					<p>
+						Técnica más completa en pie y suelo, resistencia adecuada al esfuerzo del examen y hábitos
+						sólidos de higiene y respeto. A veces empiezan exigencias de <em>kata</em> según programa.
+					</p>
+				</li>
+				<li class="belt-card">
+					<h3>Marrón · antes del negro</h3>
+					<p>
+						Preparación intensa para el salto a <em>dan</em>: precisión, volumen de técnica y madurez en el
+						tatami. El maestro suele ser muy exigente con la elegibilidad para examen de shodan.
+					</p>
+				</li>
+			</ul>
+		</section>
+
+		<section class="page-block">
+			<h2>Cinturón negro (dan)</h2>
+			<p>
+				A partir del primer dan (<em>shodan</em>) ya no hablamos solo de “color”, sino de grados negros que
+				reflejan años de práctica. Los exámenes suelen incluir <em>kata</em> establecidos, demostración amplia
+				de <em>nage-waza</em> y <em>katame-waza</em>, y criterios de madurez deportiva; en algunos sistemas
+				entra también experiencia como competidor o colaboración en el dojo.
+			</p>
+			<p>
+				Los tiempos mínimos entre dan y dan los fija la federación; no conviene compararse solo por edad o
+				años en el club: lo importante es cumplir el programa y el nivel que marca el tribunal.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Rodajes, convocatorias y web del club</h2>
+			<p>
+				Cuando haya fechas de rodaje o listados provisionales, los publicaremos en{' '}
+				<a href="/noticias">noticias</a> y en el tablón del dojo. Revisa también el{' '}
+				<a href="/calendario">calendario del club</a> para actividades que coincidan con la preparación de
+				examen.
+			</p>
+			<p>
+				Si tienes dudas sobre si puedes presentarte o qué te falta trabajar, pregúntalo en clase al maestro:
+				es la mejor forma de encajar tu caso con la normativa vigente.
+			</p>
+		</section>
+	</div>
+
+	<dialog class="promo-lightbox" data-promo-lightbox aria-label="Foto ampliada">
+		<button
+			type="button"
+			class="promo-lightbox__scrim"
+			data-promo-lightbox-close
+			aria-label="Cerrar vista ampliada"></button>
+		<div class="promo-lightbox__shell">
+			<button type="button" class="promo-lightbox__close" data-promo-lightbox-close aria-label="Cerrar">
+				×
+			</button>
+			<img class="promo-lightbox__img" alt="" decoding="async" />
+		</div>
+	</dialog>
+
+	<script>
+		function setupPromoLightboxDelegation() {
+			const html = document.documentElement;
+			if (html.dataset.promoLightboxBound === "1") return;
+			html.dataset.promoLightboxBound = "1";
+
+			document.addEventListener("click", (e) => {
+				const el = e.target instanceof Element ? e.target : null;
+				if (!el) return;
+
+				const openBtn = el.closest("[data-promo-lightbox-open]");
+				if (openBtn instanceof HTMLButtonElement) {
+					const dialog = document.querySelector("[data-promo-lightbox]");
+					const img = dialog?.querySelector(".promo-lightbox__img");
+					if (!(dialog instanceof HTMLDialogElement) || !(img instanceof HTMLImageElement)) return;
+					const src = openBtn.dataset.fullSrc;
+					if (!src) return;
+					img.src = src;
+					img.alt = openBtn.dataset.imgAlt ?? "";
+					dialog.showModal();
+					return;
+				}
+
+				if (el.closest("[data-promo-lightbox-close]")) {
+					const dialog = document.querySelector("[data-promo-lightbox]");
+					if (dialog instanceof HTMLDialogElement && dialog.open) dialog.close();
+					return;
+				}
+			});
+
+			document.addEventListener(
+				"close",
+				(e) => {
+					const t = e.target;
+					if (!(t instanceof HTMLDialogElement) || !t.matches("[data-promo-lightbox]")) return;
+					const img = t.querySelector(".promo-lightbox__img");
+					if (img instanceof HTMLImageElement) {
+						img.removeAttribute("src");
+						img.alt = "";
+					}
+				},
+				true,
+			);
+		}
+
+		setupPromoLightboxDelegation();
+		document.addEventListener("astro:page-load", setupPromoLightboxDelegation);
+	</script>
+</PageLayout>
+
+<style>
+	.promo-gallery {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: var(--space-md);
+		margin: 0 0 var(--space-xl);
+	}
+
+	.promo-gallery__item {
+		margin: 0;
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		border: 1px solid var(--border-subtle);
+		box-shadow: 0 20px 56px -36px rgba(0, 0, 0, 0.35);
+		background: var(--cal-card-bg);
+	}
+
+	.promo-gallery__trigger {
+		display: block;
+		width: 100%;
+		padding: 0;
+		border: none;
+		background: transparent;
+		cursor: zoom-in;
+		font: inherit;
+		color: inherit;
+		line-height: 0;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.promo-gallery__trigger:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 3px;
+	}
+
+	.promo-lightbox {
+		position: relative;
+		padding: 0;
+		border: none;
+		margin: 0;
+		width: 100vw;
+		max-width: 100vw;
+		height: 100vh;
+		max-height: 100vh;
+		overflow: hidden;
+		background: transparent;
+		box-sizing: border-box;
+	}
+
+	.promo-lightbox::backdrop {
+		background: rgba(0, 0, 0, 0.82);
+		backdrop-filter: blur(6px);
+	}
+
+	.promo-lightbox__scrim {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		margin: 0;
+		padding: 0;
+		border: none;
+		cursor: zoom-out;
+		background: rgba(0, 0, 0, 0.88);
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.promo-lightbox__shell {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		place-items: center;
+		min-height: 100%;
+		padding: max(3rem, env(safe-area-inset-top, 0))
+			max(1rem, env(safe-area-inset-right, 0))
+			max(1.25rem, env(safe-area-inset-bottom, 0))
+			max(1rem, env(safe-area-inset-left, 0));
+		box-sizing: border-box;
+		pointer-events: none;
+	}
+
+	.promo-lightbox__shell > .promo-lightbox__close,
+	.promo-lightbox__shell > .promo-lightbox__img {
+		pointer-events: auto;
+	}
+
+	.promo-lightbox__img {
+		display: block;
+		max-width: min(96vw, 1400px);
+		max-height: min(88dvh, 900px);
+		width: auto;
+		height: auto;
+		object-fit: contain;
+		border-radius: var(--radius-md);
+		box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+	}
+
+	.promo-lightbox__close {
+		position: absolute;
+		top: max(0.65rem, env(safe-area-inset-top));
+		right: max(0.65rem, env(safe-area-inset-right));
+		z-index: 2;
+		width: 2.75rem;
+		height: 2.75rem;
+		display: grid;
+		place-items: center;
+		padding: 0;
+		border-radius: var(--radius-full);
+		font-size: 1.65rem;
+		line-height: 1;
+		font-weight: 700;
+		cursor: pointer;
+		color: #fff;
+		background: rgba(0, 0, 0, 0.55);
+		border: 1px solid rgba(255, 255, 255, 0.28);
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.promo-lightbox__close:hover {
+		background: rgba(0, 0, 0, 0.75);
+	}
+
+	.promo-gallery__img {
+		display: block;
+		width: 100%;
+		height: auto;
+		vertical-align: middle;
+		object-fit: cover;
+		aspect-ratio: 4 / 3;
+	}
+
+	.promo-steps {
+		margin: var(--space-md) 0 0;
+		padding-left: 1.35rem;
+		max-width: 52rem;
+		line-height: 1.65;
+		color: var(--article-body);
+	}
+
+	.promo-steps li {
+		margin-bottom: var(--space-md);
+		padding-left: 0.35rem;
+	}
+
+	.promo-steps li:last-child {
+		margin-bottom: 0;
+	}
+
+	.promo-steps strong {
+		color: var(--text);
+	}
+
+	.page-block a {
+		color: var(--ice);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.page-block a:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+
+	.belt-cards {
+		list-style: none;
+		margin: var(--space-md) 0 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 0.75rem;
+	}
+
+	.belt-card {
+		margin: 0;
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border-subtle);
+		background: var(--promo-row-bg);
+	}
+
+	.belt-card h3 {
+		margin: 0 0 0.45rem;
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 1rem;
+		letter-spacing: -0.018em;
+		color: var(--accent);
+	}
+
+	.belt-card p {
+		margin: 0;
+		font-size: 0.92rem;
+		color: var(--text-muted);
+		line-height: 1.52;
+	}
+</style>

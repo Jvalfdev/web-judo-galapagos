@@ -1,0 +1,137 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import MasterTeaser from "../components/site/MasterTeaser.astro";
+import { Image } from "astro:assets";
+import fotoEquipoCompeticion from "../assets/equipocompeticion2.jpg";
+import fotoJudokaEjemplo from "../assets/580478818_808493695365896_172975829185285327_n.jpg";
+---
+
+<PageLayout
+	title="Equipo de competición"
+	description="Equipo de competición del Club de Judo Galápagos — judokas, categorías y palmarés."
+>
+	<div class="page-shell page-shell--wide">
+		<header class="page-hero">
+			<p class="page-hero__eyebrow">Competición</p>
+			<h1 class="page-hero__title">Equipo de competición</h1>
+			<p class="page-hero__lead">
+				Texto de ejemplo para la cabecera. Sustituye estos bloques por datos reales (judokas, categorías,
+				palmarés e imágenes) cuando los tengáis listos.
+			</p>
+		</header>
+
+		<figure class="comp-hero">
+			<Image
+				src={fotoEquipoCompeticion}
+				alt=""
+				class="comp-hero__img"
+				sizes="(min-width: 880px) min(920px, 92vw), 100vw"
+				loading="eager"
+				fetchpriority="high"
+				decoding="async"
+			/>
+		</figure>
+
+		<div class="comp-master-wrap">
+			<MasterTeaser />
+		</div>
+
+		<div class="comp-grid">
+			<article class="comp-card page-block">
+				<Image
+					src={fotoJudokaEjemplo}
+					alt=""
+					class="comp-card__photo"
+					width={400}
+					height={280}
+					sizes="(min-width: 520px) 280px, 100vw"
+					loading="lazy"
+					decoding="async"
+				/>
+				<h2>Judoka 1</h2>
+				<p><strong>Palmarés (ejemplo genérico):</strong></p>
+				<ul class="page-list">
+					<li>Competición de ejemplo — medalla de ejemplo</li>
+					<li>Trofeo de ejemplo — resultado de ejemplo</li>
+				</ul>
+				<p class="comp-card__note">Texto de ejemplo para enlaces o notas adicionales.</p>
+			</article>
+
+			<article class="comp-card page-block">
+				<Image
+					src={fotoJudokaEjemplo}
+					alt=""
+					class="comp-card__photo"
+					width={400}
+					height={280}
+					sizes="(min-width: 520px) 280px, 100vw"
+					loading="lazy"
+					decoding="async"
+				/>
+				<h2>Judoka 2</h2>
+				<p><strong>Palmarés (ejemplo genérico):</strong></p>
+				<ul class="page-list">
+					<li>Campeonato de ejemplo — participación</li>
+					<li>Actividad de ejemplo — convocatoria</li>
+				</ul>
+				<p class="comp-card__note">Texto de ejemplo para enlaces o notas adicionales.</p>
+			</article>
+		</div>
+	</div>
+</PageLayout>
+
+<style>
+	.comp-hero {
+		margin: 0 0 var(--space-xl);
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		border: 1px solid var(--border-subtle);
+		box-shadow: 0 28px 72px -44px rgba(0, 0, 0, 0.38);
+	}
+
+	.comp-hero__img {
+		display: block;
+		width: 100%;
+		height: auto;
+		vertical-align: middle;
+	}
+
+	.comp-master-wrap :global(.master) {
+		padding-inline: 0;
+		border-top: none;
+		margin-top: var(--space-md);
+		padding-top: var(--space-xl);
+	}
+
+	.comp-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: var(--space-md);
+	}
+
+	.comp-card {
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border-subtle);
+		background: var(--cal-card-bg);
+		margin-bottom: 0 !important;
+	}
+
+	.comp-card__photo {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: var(--radius-md);
+		object-fit: cover;
+		aspect-ratio: 4 / 3;
+		margin-bottom: var(--space-md);
+		border: 1px solid var(--border-subtle);
+	}
+
+	.comp-card__note {
+		margin: var(--space-sm) 0 0;
+		font-size: 0.92rem;
+		color: var(--text-muted);
+		line-height: 1.5;
+	}
+</style>

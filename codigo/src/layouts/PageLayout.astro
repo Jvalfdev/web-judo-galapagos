@@ -1,0 +1,32 @@
+---
+import Layout from "./Layout.astro";
+import Header from "../components/site/Header.astro";
+import Footer from "../components/site/Footer.astro";
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const {
+	title,
+	description = "Club de Judo Galápagos — formación, valores y competición.",
+} = Astro.props;
+
+const fullTitle = `${title} — Judo Galápagos`;
+---
+
+<Layout title={fullTitle} description={description}>
+	<Header />
+	<main id="contenido-principal" tabindex="-1" class="page-main">
+		<slot />
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.page-main {
+		padding-top: var(--header-h);
+		min-height: 50dvh;
+	}
+</style>

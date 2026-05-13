@@ -1,0 +1,168 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import { Image } from "astro:assets";
+import { getEntradaCalendarioPorId } from "../../data/calendario";
+import { etiquetaTipoNoticia, getNoticiaBySlug, noticias } from "../../data/noticias";
+import imgNoticiaEjemplo from "../../assets/580478818_808493695365896_172975829185285327_n.jpg";
+
+export function getStaticPaths() {
+	return noticias.map((n) => ({ params: { slug: n.slug } }));
+}
+
+const { slug } = Astro.params;
+const item = slug ? getNoticiaBySlug(slug) : undefined;
+
+if (!item) {
+	return Astro.redirect("/noticias");
+}
+
+const entradaCal = item.eventoCalendarioId
+	? getEntradaCalendarioPorId(item.eventoCalendarioId)
+	: undefined;
+
+function formatDate(iso: string) {
+	return new Date(iso + "T12:00:00").toLocaleDateString("es-EC", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
+}
+---
+
+<PageLayout title={item.title} description={item.excerpt}>
+	<article class="page-shell">
+		<p class="article-back">
+			<a href="/noticias">← Volver a noticias</a>
+		</p>
+		<figure class="article-figure">
+			<Image
+				src={imgNoticiaEjemplo}
+				alt=""
+				class="article-figure__img"
+				sizes="(min-width: 880px) min(720px, 70vw), 100vw"
+				loading="eager"
+				decoding="async"
+			/>
+		</figure>
+		<header class="article-head">
+			<time class="article-head__date" datetime={item.date}>{formatDate(item.date)}</time>
+			<span class="article-head__tag">{etiquetaTipoNoticia(item.tipoNoticia)}</span>
+			<h1 class="article-head__title">{item.title}</h1>
+			<p class="article-head__excerpt">{item.excerpt}</p>
+		</header>
+		{entradaCal && (
+			<p class="article-cal-link">
+				<a href={`/calendario#${entradaCal.id}`}>Ver esta fecha en el calendario del club</a>
+			</p>
+		)}
+		<div class="article-body">
+			{item.paragraphs.map((p) => (
+				<p>{p}</p>
+			))}
+		</div>
+	</article>
+</PageLayout>
+
+<style>
+	.article-figure {
+		margin: 0 0 var(--space-lg);
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		border: 1px solid var(--border-subtle);
+	}
+
+	.article-figure__img {
+		display: block;
+		width: 100%;
+		height: auto;
+		vertical-align: middle;
+	}
+
+	.article-cal-link {
+		margin: -0.5rem 0 var(--space-lg);
+		font-size: 0.92rem;
+		font-weight: 600;
+	}
+
+	.article-cal-link a {
+		color: var(--ice);
+		text-decoration: none;
+	}
+
+	.article-cal-link a:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+
+	.article-back {
+		margin: 0 0 var(--space-md);
+		font-size: 0.88rem;
+		font-weight: 600;
+	}
+
+	.article-back a {
+		color: var(--ice);
+		text-decoration: none;
+	}
+
+	.article-back a:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+
+	.article-head {
+		padding-bottom: var(--space-lg);
+		border-bottom: 1px solid var(--border-subtle);
+		margin-bottom: var(--space-lg);
+	}
+
+	.article-head__date {
+		display: block;
+		margin-bottom: 0.45rem;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--accent);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.article-head__tag {
+		display: inline-block;
+		margin-bottom: 0.55rem;
+		padding: 0.22rem 0.55rem;
+		border-radius: var(--radius-full);
+		font-size: 0.65rem;
+		font-weight: 700;
+		letter-spacing: 0.055em;
+		text-transform: uppercase;
+		color: var(--text);
+		background: var(--accent-soft);
+		border: 1px solid var(--footer-border-accent);
+	}
+
+	.article-head__title {
+		margin: 0 0 var(--space-sm);
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: clamp(1.65rem, 4vw, 2.25rem);
+		line-height: 1.1;
+		letter-spacing: -0.028em;
+	}
+
+	.article-head__excerpt {
+		margin: 0;
+		font-size: 1.05rem;
+		color: var(--text-muted);
+		line-height: 1.58;
+	}
+
+	.article-body p {
+		margin: 0 0 var(--space-md);
+		font-size: 1.02rem;
+		line-height: 1.65;
+		color: var(--article-body);
+	}
+
+	.article-body p:last-child {
+		margin-bottom: 0;
+	}
+</style>

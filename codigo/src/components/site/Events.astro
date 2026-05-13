@@ -1,10 +1,13 @@
 <section id="eventos" class="section section--events" aria-labelledby="events-title">
-	<div class="section__head">
-		<p class="section__eyebrow">Agenda</p>
-		<h2 id="events-title" class="section__title">Próximos hitos</h2>
-		<p class="section__intro">
-			Campamentos, exámenes de cinturón y competiciones: mantén el ritmo y marca fechas con antelación.
-		</p>
+	<div class="section__head section__head--events">
+		<div>
+			<p class="section__eyebrow">Agenda</p>
+			<h2 id="events-title" class="section__title">Próximos hitos</h2>
+			<p class="section__intro">
+				Campamentos, exámenes de cinturón y competiciones: mantén el ritmo y marca fechas con antelación.
+			</p>
+		</div>
+		<a href="/calendario" class="events-cal-btn">Calendario del club</a>
 	</div>
 
 	<div class="bento">
@@ -32,6 +35,38 @@
 </section>
 
 <style>
+	.section__head--events {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: var(--space-md);
+		max-width: none !important;
+		margin-bottom: var(--space-xl);
+	}
+
+	.events-cal-btn {
+		display: inline-flex;
+		align-items: center;
+		height: 2.6rem;
+		padding: 0 1.2rem;
+		border-radius: var(--radius-full);
+		font-size: 0.88rem;
+		font-weight: 600;
+		text-decoration: none;
+		color: #fff;
+		background: rgba(124, 240, 255, 0.08);
+		border: 1px solid rgba(124, 240, 255, 0.38);
+		transition:
+			background 0.25s ease,
+			transform 0.25s var(--ease-out-expo);
+	}
+
+	.events-cal-btn:hover {
+		background: rgba(124, 240, 255, 0.14);
+		transform: translateY(-2px);
+	}
+
 	.bento {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));

@@ -4,55 +4,36 @@
 			<p class="section__eyebrow">Horarios</p>
 			<h2 id="schedule-title" class="section__title">Cuándo entrenamos</h2>
 			<p class="section__intro section__intro--narrow">
-				Los grupos son orientativos; los ajustamos por curso y nivel. Para cualquier duda sobre horarios o niveles, contáctanos.
+				<strong>Martes y miércoles.</strong> Franjas por edad orientativas (confirma reparto y cupo con el
+				maestro). Otros días o cambios de temporada: pregúntale en el tatami o por contacto.
 			</p>
 		</div>
 		<a href="#contacto" class="btn-mini">Contacto</a>
 	</div>
 
-	<div class="schedule" role="region" aria-label="Tabla de horarios">
+	<div class="schedule" role="region" aria-label="Horarios martes y miércoles">
+		<p class="schedule__caption">Horario habitual</p>
 		<div class="schedule__head">
 			<span class="schedule__col schedule__col--group">Grupo</span>
-			<span class="schedule__col">Lunes</span>
+			<span class="schedule__col">Martes</span>
 			<span class="schedule__col">Miércoles</span>
-			<span class="schedule__col">Viernes</span>
 		</div>
 		<ul class="schedule__body">
 			<li class="schedule__row">
 				<span class="schedule__group">
-					<strong>Iniciación · 5–8 años</strong>
-					<small>Juegos, coordinación, caídas</small>
+					<strong>Peques · grupo infantil</strong>
+					<small>Niños más pequeños; el rango de edad lo concretamos en el tatami según nivel y plaza.</small>
 				</span>
-				<span class="schedule__cell" data-day="Lunes">17:00–18:00</span>
-				<span class="schedule__cell" data-day="Miércoles">17:00–18:00</span>
-				<span class="schedule__cell" data-day="Viernes">—</span>
-			</li>
-			<li class="schedule__row">
-				<span class="schedule__group">
-					<strong>Formación · 9–13 años</strong>
-					<small>Técnica y valores</small>
-				</span>
-				<span class="schedule__cell" data-day="Lunes">18:00–19:15</span>
-				<span class="schedule__cell" data-day="Miércoles">18:00–19:15</span>
-				<span class="schedule__cell" data-day="Viernes">17:30–18:45</span>
-			</li>
-			<li class="schedule__row">
-				<span class="schedule__group">
-					<strong>Cadete / Junior</strong>
-					<small>Mayor ritmo, randori guiado</small>
-				</span>
-				<span class="schedule__cell" data-day="Lunes">19:30–21:00</span>
-				<span class="schedule__cell" data-day="Miércoles">—</span>
-				<span class="schedule__cell" data-day="Viernes">19:00–20:30</span>
+				<span class="schedule__cell" data-day="Martes">18:00–19:00</span>
+				<span class="schedule__cell" data-day="Miércoles">18:00–19:00</span>
 			</li>
 			<li class="schedule__row schedule__row--accent">
 				<span class="schedule__group">
-					<strong>Adultos · todos los niveles</strong>
-					<small>Técnica, condición, bienestar</small>
+					<strong>Cadete en adelante y adultos</strong>
+					<small>Orientativo desde cadete; adolescentes y adultos comparten franja.</small>
 				</span>
-				<span class="schedule__cell" data-day="Lunes">20:15–21:45</span>
-				<span class="schedule__cell" data-day="Miércoles">20:15–21:45</span>
-				<span class="schedule__cell" data-day="Viernes">—</span>
+				<span class="schedule__cell" data-day="Martes">19:00–20:00</span>
+				<span class="schedule__cell" data-day="Miércoles">19:00–20:00</span>
 			</li>
 		</ul>
 	</div>
@@ -83,25 +64,39 @@
 		font-size: 0.88rem;
 		font-weight: 600;
 		text-decoration: none;
-		color: #fff;
-		background: rgba(255, 51, 85, 0.14);
-		border: 1px solid rgba(255, 51, 85, 0.45);
+		color: var(--btn-on-accent);
+		background: linear-gradient(135deg, var(--accent), #c9183a);
+		border: 1px solid rgba(255, 255, 255, 0.14);
+		box-shadow: 0 10px 36px -14px var(--accent-glow);
 		transition:
-			background 0.25s ease,
-			transform 0.25s var(--ease-out-expo);
+			transform 0.25s var(--ease-out-expo),
+			filter 0.25s ease;
 	}
 
 	.btn-mini:hover {
-		background: rgba(255, 51, 85, 0.22);
+		filter: brightness(1.06);
 		transform: translateY(-2px);
 	}
 
 	.schedule {
 		border-radius: calc(var(--radius-lg) + 6px);
 		border: 1px solid var(--border-subtle);
-		background: rgba(255, 255, 255, 0.02);
+		background: var(--schedule-wrap-bg);
 		backdrop-filter: blur(16px);
 		overflow: hidden;
+	}
+
+	.schedule__caption {
+		margin: 0;
+		padding: 0.85rem 1rem 0.35rem;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.055em;
+		text-transform: uppercase;
+		color: var(--ice);
+		opacity: 0.9;
+		border-bottom: 1px solid var(--border-subtle);
+		background: var(--schedule-caption-bg);
 	}
 
 	.schedule__head {
@@ -113,13 +108,13 @@
 		text-transform: uppercase;
 		color: var(--text-muted);
 		border-bottom: 1px solid var(--border-subtle);
-		background: rgba(0, 0, 0, 0.25);
+		background: var(--schedule-head-bg);
 	}
 
 	@media (min-width: 880px) {
 		.schedule__head {
 			display: grid;
-			grid-template-columns: 2fr repeat(3, 1fr);
+			grid-template-columns: 2fr repeat(2, 1fr);
 			gap: 0.75rem;
 			align-items: center;
 		}
@@ -145,12 +140,12 @@
 	}
 
 	.schedule__row:hover {
-		background: rgba(255, 255, 255, 0.03);
+		background: var(--schedule-row-hover);
 	}
 
 	@media (min-width: 880px) {
 		.schedule__row {
-			grid-template-columns: 2fr repeat(3, 1fr);
+			grid-template-columns: 2fr repeat(2, 1fr);
 			align-items: center;
 			gap: 0.75rem;
 			padding: 1rem 1rem;
@@ -159,7 +154,7 @@
 
 	.schedule__row--accent {
 		position: relative;
-		background: linear-gradient(90deg, rgba(255, 51, 85, 0.07), transparent 48%);
+		background: var(--schedule-row-accent-bg);
 	}
 
 	.schedule__row--accent::before {
@@ -196,7 +191,7 @@
 		font-variant-numeric: tabular-nums;
 		font-size: 0.92rem;
 		font-weight: 600;
-		color: rgba(244, 244, 245, 0.88);
+		color: var(--schedule-cell-text);
 		padding: 0.35rem 0;
 	}
 

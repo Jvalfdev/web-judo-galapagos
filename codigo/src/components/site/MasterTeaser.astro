@@ -1,15 +1,29 @@
+---
+import { Image } from "astro:assets";
+import logoClub from "../../assets/logo mas detallago.jpg";
+---
+
 <section class="master" aria-labelledby="master-title">
-	<div class="master__visual" aria-hidden="true">
-		<div class="master__frame"></div>
-		<div class="master__glow"></div>
+	<div class="master__visual">
+		<div class="master__glow" aria-hidden="true"></div>
+		<div class="master__frame">
+			<Image
+				src={logoClub}
+				alt="Escudo — Club de Judo Galápagos"
+				class="master__logo"
+				width={480}
+				height={480}
+				sizes="(min-width: 900px) min(42vw, 360px), min(72vw, 280px)"
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
 	</div>
 	<div class="master__content">
 		<p class="master__eyebrow">Dirección técnica</p>
-		<h2 id="master-title" class="master__title">Un maestro visible en el tatami</h2>
-		<p class="master__text">
-			Acompañamiento cercano, exigencia justa y ejemplo constante. Pronto podrás leer la historia completa del equipo técnico; mientras, ven a conocernos en persona.
-		</p>
-		<span class="master__soon">Página «El maestro» — próximamente</span>
+		<h2 id="master-title" class="master__title">Jose Andres Ramos</h2>
+		<p class="master__text">Titulaciones y experiencia de Jose</p>
+		<span class="master__soon">Marcador de posición — página «El maestro»</span>
 	</div>
 </section>
 
@@ -35,6 +49,9 @@
 
 	.master__visual {
 		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		min-height: 220px;
 		border-radius: calc(var(--radius-lg) + 8px);
 	}
@@ -46,20 +63,38 @@
 	}
 
 	.master__frame {
-		position: absolute;
-		inset: 0;
+		position: relative;
+		z-index: 1;
+		display: grid;
+		place-items: center;
+		width: min(100%, 320px);
+		margin-inline: auto;
+		aspect-ratio: 1;
+		padding: clamp(1rem, 4vw, 1.75rem);
 		border-radius: inherit;
 		border: 1px solid var(--border-subtle);
-		background:
-			radial-gradient(circle at 30% 25%, rgba(255, 51, 85, 0.35), transparent 52%),
-			radial-gradient(circle at 75% 70%, rgba(124, 240, 255, 0.14), transparent 48%),
-			linear-gradient(155deg, #141418, #0a0a0e);
+		background: var(--master-frame-bg);
 		transform: rotate(-1.5deg);
 		transition: transform 0.45s var(--ease-out-expo);
+		box-sizing: border-box;
+	}
+
+	@media (min-width: 900px) {
+		.master__frame {
+			width: min(100%, 360px);
+		}
 	}
 
 	.master:hover .master__frame {
 		transform: rotate(0deg) scale(1.01);
+	}
+
+	.master__logo {
+		display: block;
+		width: 100%;
+		height: auto;
+		max-height: 100%;
+		object-fit: contain;
 	}
 
 	.master__glow {
@@ -112,8 +147,8 @@
 		font-size: 0.8rem;
 		font-weight: 600;
 		color: var(--text-muted);
-		border: 1px dashed rgba(255, 255, 255, 0.18);
-		background: rgba(255, 255, 255, 0.03);
+		border: 1px dashed var(--border-subtle);
+		background: var(--toggle-bg);
 	}
 
 	.master__soon::before {

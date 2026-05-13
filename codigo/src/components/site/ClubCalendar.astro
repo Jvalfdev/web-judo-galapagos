@@ -1,0 +1,1419 @@
+---
+import type { EntradaCalendario, TipoCalendario } from "../../data/calendario";
+import { etiquetaTipo } from "../../data/calendario";
+
+interface Props {
+	items: EntradaCalendario[];
+}
+
+const { items } = Astro.props;
+
+const tipoLabels: Record<TipoCalendario, string> = {
+	competicion: etiquetaTipo("competicion"),
+	examen: etiquetaTipo("examen"),
+	evento: etiquetaTipo("evento"),
+	club: etiquetaTipo("club"),
+};
+
+const calendarItemsJson = JSON.stringify(items);
+const calendarTipoLabelsJson = JSON.stringify(tipoLabels);
+---
+
+<div class="club-cal" data-club-cal>
+	<div class="club-cal__surface">
+		<div class="club-cal__toolbar">
+			<div class="club-cal__tabs" role="tablist" aria-label="Vista del calendario">
+				<button type="button" class="club-cal__tab" role="tab" aria-selected="true" data-cal-tab="month">
+					Mes
+				</button>
+				<button type="button" class="club-cal__tab" role="tab" aria-selected="false" data-cal-tab="year">
+					Año
+				</button>
+			</div>
+
+			<div class="club-cal__nav club-cal__nav--month" data-cal-nav-month>
+				<button type="button" class="club-cal__arrow" aria-label="Mes anterior" data-cal-prev-month>
+					‹
+				</button>
+				<h2 class="club-cal__period" data-cal-month-heading></h2>
+				<button type="button" class="club-cal__arrow" aria-label="Mes siguiente" data-cal-next-month>
+					›
+				</button>
+				<button type="button" class="club-cal__today" data-cal-today>Hoy</button>
+			</div>
+
+			<div class="club-cal__nav club-cal__nav--year is-hidden" data-cal-nav-year hidden>
+				<button type="button" class="club-cal__arrow" aria-label="Año anterior" data-cal-prev-year>
+					‹
+				</button>
+				<h2 class="club-cal__period" data-cal-year-heading></h2>
+				<button type="button" class="club-cal__arrow" aria-label="Año siguiente" data-cal-next-year>
+					›
+				</button>
+			</div>
+		</div>
+
+		<p class="club-cal__legend">
+			<span class="club-cal__legend-item"><i class="club-cal__dot club-cal__dot--competicion"></i> Competición</span>
+			<span class="club-cal__legend-item"><i class="club-cal__dot club-cal__dot--examen"></i> Examen</span>
+			<span class="club-cal__legend-item"><i class="club-cal__dot club-cal__dot--evento"></i> Evento</span>
+			<span class="club-cal__legend-item"><i class="club-cal__dot club-cal__dot--club"></i> Club</span>
+		</p>
+
+		<div class="club-cal__panel" data-cal-panel-month>
+			<div class="club-cal__month-matrix" data-cal-month-grid></div>
+		</div>
+
+		<div class="club-cal__day-sheet" data-cal-day-sheet hidden>
+			<div class="club-cal__day-sheet-inner">
+				<p class="club-cal__day-sheet-date" data-cal-day-sheet-date></p>
+				<p class="club-cal__day-sheet-empty" data-cal-day-sheet-empty hidden>Este día no hay eventos en el calendario.</p>
+				<ul class="club-cal__day-sheet-list" data-cal-day-sheet-list></ul>
+			</div>
+		</div>
+
+		<div class="club-cal__panel is-hidden" data-cal-panel-year hidden>
+			<div class="club-cal__year-grid" data-cal-year-grid></div>
+		</div>
+	</div>
+
+	<section class="club-cal__list-section" aria-labelledby="club-cal-list-title" aria-live="polite">
+		<div class="club-cal__list-head">
+			<h2 id="club-cal-list-title" class="club-cal__list-title" data-cal-list-title>Eventos</h2>
+			<p class="club-cal__list-sub" data-cal-list-sub></p>
+		</div>
+		<p class="club-cal__empty is-hidden" data-cal-empty>No hay eventos en este periodo.</p>
+		<ul class="club-cal__list cal-list" data-cal-list></ul>
+	</section>
+</div>
+
+<script define:vars={{ calendarItemsJson, calendarTipoLabelsJson }}>
+	const items = JSON.parse(calendarItemsJson);
+	const tipoLabels = JSON.parse(calendarTipoLabelsJson);
+	function pad(n) {
+		return String(n).padStart(2, "0");
+	}
+
+	function iso(y, m1, d) {
+		return `${y}-${pad(m1)}-${pad(d)}`;
+	}
+
+	function etiqueta(tipo) {
+		return tipoLabels[tipo] ?? tipo;
+	}
+
+	function overlapsMonth(e, y, m0) {
+		const start = e.fechaInicio;
+		const end = e.fechaFin || e.fechaInicio;
+		const last = new Date(y, m0 + 1, 0).getDate();
+		const monthStart = iso(y, m0 + 1, 1);
+		const monthEnd = iso(y, m0 + 1, last);
+		return start <= monthEnd && end >= monthStart;
+	}
+
+	function overlapsYear(e, y) {
+		const start = e.fechaInicio;
+		const end = e.fechaFin || e.fechaInicio;
+		const yStart = `${y}-01-01`;
+		const yEnd = `${y}-12-31`;
+		return start <= yEnd && end >= yStart;
+	}
+
+	function eachDayOfEvent(e) {
+		const days = [];
+		const [ya, ma, da] = e.fechaInicio.split("-").map(Number);
+		const [yb, mb, db] = (e.fechaFin || e.fechaInicio).split("-").map(Number);
+		const cur = new Date(ya, ma - 1, da);
+		const end = new Date(yb, mb - 1, db);
+		while (cur.getTime() <= end.getTime()) {
+			days.push(iso(cur.getFullYear(), cur.getMonth() + 1, cur.getDate()));
+			cur.setDate(cur.getDate() + 1);
+		}
+		return days;
+	}
+
+	/** @type {Map<string, Set<string>>} */
+	function buildDayTipos(items) {
+		const map = new Map();
+		for (const e of items) {
+			for (const day of eachDayOfEvent(e)) {
+				if (!map.has(day)) map.set(day, new Set());
+				map.get(day).add(e.tipo);
+			}
+		}
+		return map;
+	}
+
+	function buildDayEvents(items) {
+		const map = new Map();
+		for (const e of items) {
+			for (const day of eachDayOfEvent(e)) {
+				if (!map.has(day)) map.set(day, []);
+				map.get(day).push(e);
+			}
+		}
+		const ordenTipo = { competicion: 0, examen: 1, evento: 2, club: 3 };
+		for (const [day, arr] of map) {
+			const seen = new Set();
+			const uniq = [];
+			for (const ev of arr) {
+				if (seen.has(ev.id)) continue;
+				seen.add(ev.id);
+				uniq.push(ev);
+			}
+			uniq.sort((a, b) => {
+				const ta = ordenTipo[a.tipo] ?? 9;
+				const tb = ordenTipo[b.tipo] ?? 9;
+				if (ta !== tb) return ta - tb;
+				return a.fechaInicio.localeCompare(b.fechaInicio) || a.titulo.localeCompare(b.titulo);
+			});
+			map.set(day, uniq);
+		}
+		return map;
+	}
+
+	function formatRange(e) {
+		const opts = { day: "numeric", month: "short" };
+		const i = new Date(e.fechaInicio + "T12:00:00").toLocaleDateString("es-EC", opts);
+		if (!e.fechaFin) return i;
+		const f = new Date(e.fechaFin + "T12:00:00").toLocaleDateString("es-EC", opts);
+		return `${i} — ${f}`;
+	}
+
+	function monthTitle(y, m0) {
+		return new Date(y, m0, 1).toLocaleDateString("es-EC", {
+			month: "long",
+			year: "numeric",
+		});
+	}
+
+	function shortMonth(m0) {
+		return new Date(2020, m0, 1).toLocaleDateString("es-EC", { month: "short" });
+	}
+
+	function pickInitialMonth(items) {
+		const now = new Date();
+		const y = now.getFullYear();
+		const m0 = now.getMonth();
+		const inCurrent = items.some((e) => overlapsMonth(e, y, m0));
+		if (inCurrent) return { y, m0 };
+		if (!items.length) return { y, m0 };
+		const sorted = [...items].sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio));
+		const t = sorted.find((e) => e.fechaInicio >= iso(y, m0 + 1, now.getDate())) || sorted[0];
+		const [yy, mm] = t.fechaInicio.split("-").map(Number);
+		return { y: yy, m0: mm - 1 };
+	}
+
+	function formatDayHeading(dayStr) {
+		const [yy, mm, dd] = dayStr.split("-").map(Number);
+		const dt = new Date(yy, mm - 1, dd);
+		const capital = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+		return capital(dt.toLocaleDateString("es-EC", { weekday: "long", day: "numeric", month: "long", year: "numeric" }));
+	}
+
+	function renderDots(types) {
+		const order = ["competicion", "examen", "evento", "club"];
+		const frag = document.createDocumentFragment();
+		const list = [...types].sort((a, b) => order.indexOf(a) - order.indexOf(b));
+		for (const t of list.slice(0, 4)) {
+			const i = document.createElement("i");
+			i.className = `club-cal__dot club-cal__dot--${t}`;
+			frag.appendChild(i);
+		}
+		return frag;
+	}
+
+	function renderMonthGrid(root, dayTipos, y, m0, todayStr) {
+		root.replaceChildren();
+		const letters = ["L", "M", "X", "J", "V", "S", "D"];
+		const names = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+		for (let i = 0; i < 7; i++) {
+			const w = document.createElement("div");
+			w.className = "club-cal__wk";
+			w.textContent = letters[i];
+			w.title = names[i];
+			w.setAttribute("aria-hidden", "true");
+			root.appendChild(w);
+		}
+
+		const first = new Date(y, m0, 1);
+		const mondayOffset = (first.getDay() + 6) % 7;
+		const lastDay = new Date(y, m0 + 1, 0).getDate();
+
+		for (let i = 0; i < mondayOffset; i++) {
+			const cell = document.createElement("div");
+			cell.className = "club-cal__cell club-cal__cell--pad";
+			cell.setAttribute("aria-hidden", "true");
+			root.appendChild(cell);
+		}
+
+		for (let d = 1; d <= lastDay; d++) {
+			const dayStr = iso(y, m0 + 1, d);
+			const cell = document.createElement("button");
+			cell.type = "button";
+			cell.className = "club-cal__cell";
+			cell.dataset.day = dayStr;
+			cell.setAttribute(
+				"aria-label",
+				`${String(d)} · ${new Date(y, m0, d).toLocaleDateString("es-EC", { weekday: "long" })}`,
+			);
+
+			const num = document.createElement("span");
+			num.className = "club-cal__num";
+			num.textContent = String(d);
+			num.setAttribute("aria-hidden", "true");
+			cell.appendChild(num);
+
+			const tipos = dayTipos.get(dayStr);
+			if (tipos && tipos.size) {
+				cell.classList.add("club-cal__cell--busy");
+				const order = ["competicion", "examen", "evento", "club"];
+				const sortedTipos = [...tipos].sort((a, b) => order.indexOf(a) - order.indexOf(b));
+				for (const t of sortedTipos) {
+					cell.classList.add(`club-cal__cell--tipo-${t}`);
+				}
+
+				const row = document.createElement("div");
+				row.className = "club-cal__dots";
+				row.setAttribute("aria-hidden", "true");
+				row.appendChild(renderDots(sortedTipos));
+				cell.appendChild(row);
+
+				const strip = document.createElement("div");
+				strip.className = "club-cal__tipo-strip";
+				strip.setAttribute("aria-hidden", "true");
+				for (const t of sortedTipos) {
+					const seg = document.createElement("span");
+					seg.className = `club-cal__tipo-seg club-cal__tipo-seg--${t}`;
+					strip.appendChild(seg);
+				}
+				cell.appendChild(strip);
+			}
+
+			if (dayStr === todayStr) cell.classList.add("club-cal__cell--today");
+
+			root.appendChild(cell);
+		}
+	}
+
+	function renderYearGrid(root, dayTipos, year, todayStr, onPickMonth) {
+		root.replaceChildren();
+		for (let m0 = 0; m0 < 12; m0++) {
+			const mini = document.createElement("button");
+			mini.type = "button";
+			mini.className = "club-cal__mini";
+			mini.dataset.gotoMonth = `${year}-${pad(m0 + 1)}`;
+			mini.setAttribute("aria-label", `Ver ${monthTitle(year, m0)}`);
+
+			const tit = document.createElement("span");
+			tit.className = "club-cal__mini-title";
+			tit.textContent = shortMonth(m0).replace(/\.$/, "");
+			mini.appendChild(tit);
+
+			const grid = document.createElement("div");
+			grid.className = "club-cal__mini-grid";
+
+			const first = new Date(year, m0, 1);
+			const off = (first.getDay() + 6) % 7;
+			const lastDay = new Date(year, m0 + 1, 0).getDate();
+
+			for (let i = 0; i < off; i++) {
+				const c = document.createElement("span");
+				c.className = "club-cal__mini-cell club-cal__mini-cell--pad";
+				grid.appendChild(c);
+			}
+			let busyAny = false;
+			for (let d = 1; d <= lastDay; d++) {
+				const dayStr = iso(year, m0 + 1, d);
+				const c = document.createElement("span");
+				c.className = "club-cal__mini-cell";
+				if (dayStr === todayStr) c.classList.add("club-cal__mini-cell--today");
+				const tipos = dayTipos.get(dayStr);
+				if (tipos && tipos.size) {
+					busyAny = true;
+					c.classList.add("club-cal__mini-cell--busy");
+					for (const t of tipos) {
+						const dot = document.createElement("i");
+						dot.className = `club-cal__dot club-cal__dot--${t}`;
+						c.appendChild(dot);
+						break;
+					}
+				}
+				grid.appendChild(c);
+			}
+
+			if (busyAny) mini.classList.add("club-cal__mini--has-events");
+
+			mini.appendChild(grid);
+			mini.addEventListener("click", () => onPickMonth(year, m0));
+			root.appendChild(mini);
+		}
+	}
+
+	function buildListItem(e) {
+		const li = document.createElement("li");
+		li.className = "cal-item";
+		li.id = e.id;
+
+		const dates = document.createElement("div");
+		dates.className = "cal-item__dates";
+		const time = document.createElement("time");
+		time.dateTime = e.fechaInicio;
+		time.textContent = formatRange(e);
+		dates.appendChild(time);
+
+		const body = document.createElement("div");
+		body.className = "cal-item__body";
+
+		const tag = document.createElement("span");
+		tag.className = `cal-item__tag cal-item__tag--${e.tipo}`;
+		tag.textContent = etiqueta(e.tipo);
+
+		const h = document.createElement("h3");
+		h.className = "cal-item__title";
+		h.textContent = e.titulo;
+
+		body.appendChild(tag);
+		body.appendChild(h);
+		if (e.descripcion) {
+			const p = document.createElement("p");
+			p.className = "cal-item__desc";
+			p.textContent = e.descripcion;
+			body.appendChild(p);
+		}
+		if (e.lugar) {
+			const p = document.createElement("p");
+			p.className = "cal-item__place";
+			const strong = document.createElement("strong");
+			strong.textContent = "Lugar:";
+			p.appendChild(strong);
+			p.appendChild(document.createTextNode(" " + e.lugar));
+			body.appendChild(p);
+		}
+
+		li.appendChild(dates);
+		li.appendChild(body);
+		return li;
+	}
+
+	function renderList(listEl, emptyEl, entries, mode, y, m0) {
+		listEl.replaceChildren();
+		if (!entries.length) {
+			emptyEl.classList.remove("is-hidden");
+			return;
+		}
+		emptyEl.classList.add("is-hidden");
+		if (mode === "month") {
+			for (const e of entries) listEl.appendChild(buildListItem(e));
+			return;
+		}
+		const byMonth = new Map();
+		for (const e of entries) {
+			const mk = e.fechaInicio.slice(0, 7);
+			if (!byMonth.has(mk)) byMonth.set(mk, []);
+			byMonth.get(mk).push(e);
+		}
+		const keys = [...byMonth.keys()].sort();
+		for (const mk of keys) {
+			const [yy, mm] = mk.split("-").map(Number);
+			const sub = document.createElement("li");
+			sub.className = "club-cal__month-block";
+
+			const h = document.createElement("h3");
+			h.className = "club-cal__month-block-title";
+			h.textContent = monthTitle(yy, mm - 1);
+			sub.appendChild(h);
+
+			const ul = document.createElement("ul");
+			ul.className = "cal-list club-cal__nested-list";
+			for (const e of byMonth.get(mk)) {
+				ul.appendChild(buildListItem(e));
+			}
+			sub.appendChild(ul);
+			listEl.appendChild(sub);
+		}
+	}
+
+	function run() {
+		const root = document.querySelector("[data-club-cal]");
+		if (!root || root.dataset.jgCalBound === "1") return;
+		root.dataset.jgCalBound = "1";
+
+		const tabMonth = root.querySelector('[data-cal-tab="month"]');
+		const tabYear = root.querySelector('[data-cal-tab="year"]');
+		const navMonth = root.querySelector("[data-cal-nav-month]");
+		const navYear = root.querySelector("[data-cal-nav-year]");
+		const panelMonth = root.querySelector("[data-cal-panel-month]");
+		const panelYear = root.querySelector("[data-cal-panel-year]");
+		const gridMonth = root.querySelector("[data-cal-month-grid]");
+		const gridYear = root.querySelector("[data-cal-year-grid]");
+		const hMonth = root.querySelector("[data-cal-month-heading]");
+		const hYear = root.querySelector("[data-cal-year-heading]");
+		const listEl = root.querySelector("[data-cal-list]");
+		const emptyEl = root.querySelector("[data-cal-empty]");
+		const titleEl = root.querySelector("[data-cal-list-title]");
+		const subEl = root.querySelector("[data-cal-list-sub]");
+
+		const dayTipos = buildDayTipos(items);
+		const dayEventsMap = buildDayEvents(items);
+
+		const daySheet = root.querySelector("[data-cal-day-sheet]");
+		const daySheetDate = root.querySelector("[data-cal-day-sheet-date]");
+		const daySheetList = root.querySelector("[data-cal-day-sheet-list]");
+		const daySheetEmpty = root.querySelector("[data-cal-day-sheet-empty]");
+		let pickedDayBtn = null;
+
+		function hideDaySheet() {
+			if (daySheet) daySheet.hidden = true;
+			if (pickedDayBtn) {
+				pickedDayBtn.classList.remove("club-cal__cell--picked");
+				pickedDayBtn = null;
+			}
+		}
+
+		function openDaySheet(dayStr) {
+			if (!daySheet || !daySheetDate || !daySheetList || !daySheetEmpty) return;
+			const evs = dayEventsMap.get(dayStr) || [];
+			daySheet.hidden = false;
+			daySheetDate.textContent = formatDayHeading(dayStr);
+			daySheetList.replaceChildren();
+			daySheet.scrollIntoView({ behavior: "smooth", block: "nearest" });
+			if (!evs.length) {
+				daySheetEmpty.hidden = false;
+				return;
+			}
+			daySheetEmpty.hidden = true;
+			for (const e of evs) {
+				const li = document.createElement("li");
+				li.className = "club-cal__day-sheet-item";
+
+				const tag = document.createElement("span");
+				tag.className = `cal-item__tag cal-item__tag--${e.tipo}`;
+				tag.textContent = etiqueta(e.tipo);
+
+				const h = document.createElement("p");
+				h.className = "club-cal__day-sheet-title";
+				h.textContent = e.titulo;
+
+				li.appendChild(tag);
+				li.appendChild(h);
+				if (e.descripcion) {
+					const p = document.createElement("p");
+					p.className = "club-cal__day-sheet-desc";
+					p.textContent = e.descripcion;
+					li.appendChild(p);
+				}
+				if (e.lugar) {
+					const p = document.createElement("p");
+					p.className = "club-cal__day-sheet-place";
+					const strong = document.createElement("strong");
+					strong.textContent = "Lugar:";
+					p.appendChild(strong);
+					p.appendChild(document.createTextNode(" " + e.lugar));
+					li.appendChild(p);
+				}
+				daySheetList.appendChild(li);
+			}
+		}
+
+		gridMonth.addEventListener("click", (e) => {
+			const btn = e.target.closest(".club-cal__cell[data-day]");
+			if (!(btn instanceof HTMLButtonElement)) return;
+			const dayStr = btn.dataset.day;
+			if (!dayStr) return;
+			if (pickedDayBtn && pickedDayBtn !== btn) pickedDayBtn.classList.remove("club-cal__cell--picked");
+			pickedDayBtn = btn;
+			btn.classList.add("club-cal__cell--picked");
+			openDaySheet(dayStr);
+		});
+		const hashId = decodeURIComponent((location.hash || "").slice(1));
+		const hashEv = hashId ? items.find((e) => e.id === hashId) : undefined;
+		const init = hashEv
+			? (() => {
+					const [yy, mm] = hashEv.fechaInicio.split("-").map(Number);
+					return { y: yy, m0: mm - 1 };
+				})()
+			: pickInitialMonth(items);
+		let view = "month";
+		let y = init.y;
+		let m0 = init.m0;
+		let yearShown = y;
+
+		const today = new Date();
+		const todayStr = iso(today.getFullYear(), today.getMonth() + 1, today.getDate());
+
+		function sync() {
+			hideDaySheet();
+			if (view === "month") {
+				tabMonth.setAttribute("aria-selected", "true");
+				tabYear.setAttribute("aria-selected", "false");
+				navMonth.hidden = false;
+				navMonth.classList.remove("is-hidden");
+				navYear.hidden = true;
+				navYear.classList.add("is-hidden");
+				panelMonth.hidden = false;
+				panelMonth.classList.remove("is-hidden");
+				panelYear.hidden = true;
+				panelYear.classList.add("is-hidden");
+				hMonth.textContent = monthTitle(y, m0);
+				renderMonthGrid(gridMonth, dayTipos, y, m0, todayStr);
+				const monthEvents = items
+					.filter((e) => overlapsMonth(e, y, m0))
+					.sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio));
+				titleEl.textContent = "Eventos del mes";
+				subEl.textContent = monthTitle(y, m0).replace(/^./, (c) => c.toUpperCase());
+				renderList(listEl, emptyEl, monthEvents, "month", y, m0);
+			} else {
+				tabMonth.setAttribute("aria-selected", "false");
+				tabYear.setAttribute("aria-selected", "true");
+				navMonth.hidden = true;
+				navMonth.classList.add("is-hidden");
+				navYear.hidden = false;
+				navYear.classList.remove("is-hidden");
+				panelMonth.hidden = true;
+				panelMonth.classList.add("is-hidden");
+				panelYear.hidden = false;
+				panelYear.classList.remove("is-hidden");
+				hYear.textContent = String(yearShown);
+				renderYearGrid(gridYear, dayTipos, yearShown, todayStr, (yy, mm) => {
+					view = "month";
+					y = yy;
+					m0 = mm;
+					sync();
+				});
+				const yearEvents = items
+					.filter((e) => overlapsYear(e, yearShown))
+					.sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio));
+				titleEl.textContent = "Eventos del año";
+				subEl.textContent = `${yearShown} · pulsa un mes en la cuadrícula para ver el detalle`;
+				renderList(listEl, emptyEl, yearEvents, "year", yearShown, 0);
+			}
+		}
+
+		tabMonth.addEventListener("click", () => {
+			view = "month";
+			sync();
+		});
+		tabYear.addEventListener("click", () => {
+			view = "year";
+			yearShown = y;
+			sync();
+		});
+
+		root.querySelector("[data-cal-prev-month]").addEventListener("click", () => {
+			m0--;
+			if (m0 < 0) {
+				m0 = 11;
+				y--;
+			}
+			sync();
+		});
+		root.querySelector("[data-cal-next-month]").addEventListener("click", () => {
+			m0++;
+			if (m0 > 11) {
+				m0 = 0;
+				y++;
+			}
+			sync();
+		});
+		root.querySelector("[data-cal-today]").addEventListener("click", () => {
+			const n = new Date();
+			y = n.getFullYear();
+			m0 = n.getMonth();
+			sync();
+		});
+
+		root.querySelector("[data-cal-prev-year]").addEventListener("click", () => {
+			yearShown--;
+			sync();
+		});
+		root.querySelector("[data-cal-next-year]").addEventListener("click", () => {
+			yearShown++;
+			sync();
+		});
+
+		sync();
+
+		if (hashId) {
+			requestAnimationFrame(() => {
+				const el = document.getElementById(hashId);
+				if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+			});
+		}
+	}
+
+	run();
+	document.addEventListener("astro:page-load", run);
+</script>
+
+<style>
+	.club-cal {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xl);
+	}
+
+	.club-cal__surface {
+		position: relative;
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border-subtle);
+		background:
+			linear-gradient(135deg, rgba(225, 29, 72, 0.06), transparent 42%),
+			linear-gradient(215deg, rgba(14, 116, 144, 0.05), transparent 48%),
+			var(--cal-card-bg);
+		box-shadow: var(--card-shadow);
+		overflow: hidden;
+	}
+
+	.club-cal__surface::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		opacity: 0.45;
+		background: radial-gradient(ellipse 70% 55% at 100% 0%, rgba(225, 29, 72, 0.12), transparent 55%);
+	}
+
+	.club-cal__toolbar {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-md);
+		margin-bottom: var(--space-sm);
+	}
+
+	.club-cal__tabs {
+		display: inline-flex;
+		padding: 4px;
+		border-radius: var(--radius-full);
+		background: rgba(0, 0, 0, 0.045);
+		border: 1px solid var(--border-subtle);
+		gap: 4px;
+	}
+
+	[data-theme="dark"] .club-cal__tabs {
+		background: rgba(255, 255, 255, 0.04);
+	}
+
+	.club-cal__tab {
+		border: none;
+		cursor: pointer;
+		padding: 0.45rem 1rem;
+		border-radius: var(--radius-full);
+		font-family: var(--font-body);
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		color: var(--text-muted);
+		background: transparent;
+		transition:
+			background 0.2s ease,
+			color 0.2s ease;
+	}
+
+	.club-cal__tab[aria-selected="true"] {
+		color: var(--text);
+		background: var(--card-surface);
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+		border: 1px solid var(--border-subtle);
+	}
+
+	[data-theme="dark"] .club-cal__tab[aria-selected="true"] {
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+	}
+
+	.club-cal__nav {
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+		flex-wrap: wrap;
+	}
+
+	.club-cal__nav.is-hidden {
+		display: none !important;
+	}
+
+	.club-cal__period {
+		margin: 0;
+		min-width: 10ch;
+		text-align: center;
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 1.05rem;
+		text-transform: capitalize;
+		letter-spacing: -0.02em;
+		line-height: 1.2;
+	}
+
+	.club-cal__arrow {
+		width: 2.35rem;
+		height: 2.35rem;
+		display: grid;
+		place-items: center;
+		border-radius: 12px;
+		border: 1px solid var(--border-subtle);
+		background: var(--btn-ghost-bg);
+		color: var(--text);
+		font-size: 1.25rem;
+		line-height: 1;
+		cursor: pointer;
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease,
+			transform 0.2s var(--ease-out-expo);
+	}
+
+	.club-cal__arrow:hover {
+		background: var(--btn-ghost-bg-hover);
+		border-color: var(--btn-ghost-border-hover);
+		transform: translateY(-1px);
+	}
+
+	.club-cal__today {
+		margin-left: 0.35rem;
+		padding: 0.45rem 0.85rem;
+		border-radius: var(--radius-full);
+		border: 1px solid var(--border-subtle);
+		background: transparent;
+		font-family: var(--font-body);
+		font-size: 0.78rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--ice);
+		cursor: pointer;
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease;
+	}
+
+	.club-cal__today:hover {
+		background: var(--nav-link-hover-bg);
+		border-color: rgba(14, 116, 144, 0.35);
+	}
+
+	.club-cal__legend {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem 1.1rem;
+		margin: 0 0 var(--space-md);
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: var(--text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.club-cal__legend-item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+
+	.club-cal__dot {
+		display: inline-block;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		flex-shrink: 0;
+	}
+
+	.club-cal__dot--competicion {
+		background: var(--cal-comp-tag-fg);
+		box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.35);
+	}
+
+	.club-cal__dot--examen {
+		background: var(--cal-examen-tag-fg);
+		box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.35);
+	}
+
+	.club-cal__dot--evento {
+		background: var(--ice);
+		box-shadow: 0 0 0 2px rgba(14, 116, 144, 0.28);
+	}
+
+	[data-theme="dark"] .club-cal__dot--evento {
+		box-shadow: 0 0 0 2px rgba(124, 240, 255, 0.35);
+	}
+
+	.club-cal__dot--club {
+		background: var(--cal-club-tag-fg);
+		box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.38);
+	}
+
+	.club-cal__day-sheet {
+		position: relative;
+		z-index: 1;
+		margin-top: var(--space-md);
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border-subtle);
+		background: var(--card-surface);
+		box-shadow: var(--card-shadow);
+	}
+
+	.club-cal__day-sheet[hidden] {
+		display: none !important;
+	}
+
+	.club-cal__day-sheet-inner {
+		max-width: 42rem;
+	}
+
+	.club-cal__day-sheet-date {
+		margin: 0 0 var(--space-sm);
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 1rem;
+		letter-spacing: -0.02em;
+		color: var(--text);
+	}
+
+	.club-cal__day-sheet-empty {
+		margin: 0;
+		font-size: 0.92rem;
+		font-weight: 600;
+		color: var(--text-muted);
+	}
+
+	.club-cal__day-sheet-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.club-cal__day-sheet :global(.club-cal__day-sheet-item) {
+		padding: var(--space-sm) var(--space-md);
+		border-radius: 14px;
+		border: 1px solid var(--border-subtle);
+		background: var(--cal-card-bg);
+	}
+
+	.club-cal__day-sheet :global(.club-cal__day-sheet-title) {
+		margin: 0.35rem 0 0;
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 1rem;
+		line-height: 1.3;
+		color: var(--text);
+	}
+
+	.club-cal__day-sheet :global(.club-cal__day-sheet-desc) {
+		margin: 0.35rem 0 0;
+		font-size: 0.88rem;
+		color: var(--text-muted);
+		line-height: 1.45;
+	}
+
+	.club-cal__day-sheet :global(.club-cal__day-sheet-place) {
+		margin: 0.35rem 0 0;
+		font-size: 0.82rem;
+		color: var(--text-muted);
+		line-height: 1.4;
+	}
+
+	.club-cal__day-sheet :global(.club-cal__day-sheet-place strong) {
+		font-weight: 700;
+		color: var(--text-body);
+	}
+
+	.club-cal__panel.is-hidden {
+		display: none !important;
+	}
+
+	.club-cal__panel[data-cal-panel-month] {
+		width: 100%;
+		min-width: 0;
+	}
+
+	/* Una sola rejilla: fila de cabecera + días (mismas 7 columnas, sin desajuste) */
+	.club-cal__month-matrix {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		grid-template-columns: repeat(7, minmax(0, 1fr));
+		gap: 6px;
+		width: 100%;
+		min-width: 0;
+		box-sizing: border-box;
+	}
+
+	.club-cal__month-matrix :global(.club-cal__wk) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 0;
+		min-height: 1.75rem;
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		font-size: 0.68rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--text-muted);
+		text-align: center;
+	}
+
+	.club-cal__month-matrix :global(.club-cal__cell:is(button)) {
+		font: inherit;
+		color: inherit;
+		text-align: center;
+		-webkit-tap-highlight-color: transparent;
+		appearance: none;
+		cursor: pointer;
+	}
+
+	.club-cal__month-matrix :global(.club-cal__cell:is(button):focus-visible) {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+		z-index: 2;
+	}
+
+	.club-cal__month-matrix :global(.club-cal__cell--picked) {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+		box-shadow: 0 10px 36px -22px var(--accent-glow);
+		z-index: 2;
+	}
+
+	.club-cal__month-matrix :global(.club-cal__cell) {
+		aspect-ratio: 1;
+		min-height: 52px;
+		padding: 6px;
+		border-radius: 14px;
+		border: 1px solid transparent;
+		background: rgba(0, 0, 0, 0.02);
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: flex-start;
+		gap: 4px;
+		box-sizing: border-box;
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease,
+			transform 0.2s var(--ease-out-expo);
+	}
+
+	[data-theme="dark"] .club-cal__month-matrix :global(.club-cal__cell) {
+		background: rgba(255, 255, 255, 0.025);
+	}
+
+	.club-cal__month-matrix :global(.club-cal__cell--pad) {
+		background: transparent !important;
+		border: none !important;
+		pointer-events: none;
+		min-height: 0;
+		aspect-ratio: auto;
+		padding: 0;
+	}
+
+	.club-cal__month-matrix :global(.club-cal__cell--busy) {
+		cursor: pointer;
+		border-color: rgba(0, 0, 0, 0.14);
+		background: rgba(0, 0, 0, 0.035);
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+	}
+
+	[data-theme="dark"] .club-cal__month-matrix :global(.club-cal__cell--busy) {
+		border-color: rgba(255, 255, 255, 0.16);
+		background: rgba(255, 255, 255, 0.06);
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+	}
+
+	/* Matiz por tipo (cuando solo hay uno en el día) */
+	.club-cal__month-matrix :global(.club-cal__cell--busy.club-cal__cell--tipo-competicion:not(.club-cal__cell--tipo-examen):not(.club-cal__cell--tipo-evento):not(.club-cal__cell--tipo-club)) {
+		border-color: rgba(185, 28, 28, 0.45);
+		background: linear-gradient(160deg, rgba(185, 28, 28, 0.24), rgba(185, 28, 28, 0.07));
+	}
+
+	.club-cal__month-matrix :global(.club-cal__cell--busy.club-cal__cell--tipo-examen:not(.club-cal__cell--tipo-competicion):not(.club-cal__cell--tipo-evento):not(.club-cal__cell--tipo-club)) {
+		border-color: rgba(15, 118, 110, 0.45);
+		background: linear-gradient(160deg, rgba(15, 118, 110, 0.26), rgba(15, 118, 110, 0.08));
+	}
+
+	.club-cal__month-matrix :global(.club-cal__cell--busy.club-cal__cell--tipo-evento:not(.club-cal__cell--tipo-competicion):not(.club-cal__cell--tipo-examen):not(.club-cal__cell--tipo-club)) {
+		border-color: rgba(14, 116, 144, 0.42);
+		background: linear-gradient(160deg, rgba(14, 116, 144, 0.22), rgba(14, 116, 144, 0.06));
+	}
+
+	.club-cal__month-matrix :global(.club-cal__cell--busy.club-cal__cell--tipo-club:not(.club-cal__cell--tipo-competicion):not(.club-cal__cell--tipo-examen):not(.club-cal__cell--tipo-evento)) {
+		border-color: rgba(109, 40, 217, 0.42);
+		background: linear-gradient(160deg, rgba(109, 40, 217, 0.22), rgba(109, 40, 217, 0.07));
+	}
+
+	[data-theme="dark"] .club-cal__month-matrix :global(.club-cal__cell--busy.club-cal__cell--tipo-competicion:not(.club-cal__cell--tipo-examen):not(.club-cal__cell--tipo-evento):not(.club-cal__cell--tipo-club)) {
+		border-color: rgba(255, 107, 122, 0.45);
+		background: linear-gradient(160deg, rgba(255, 51, 85, 0.28), rgba(255, 51, 85, 0.09));
+	}
+
+	[data-theme="dark"] .club-cal__month-matrix :global(.club-cal__cell--busy.club-cal__cell--tipo-examen:not(.club-cal__cell--tipo-competicion):not(.club-cal__cell--tipo-evento):not(.club-cal__cell--tipo-club)) {
+		border-color: rgba(94, 234, 212, 0.35);
+		background: linear-gradient(160deg, rgba(45, 212, 191, 0.22), rgba(45, 212, 191, 0.07));
+	}
+
+	[data-theme="dark"] .club-cal__month-matrix :global(.club-cal__cell--busy.club-cal__cell--tipo-evento:not(.club-cal__cell--tipo-competicion):not(.club-cal__cell--tipo-examen):not(.club-cal__cell--tipo-club)) {
+		border-color: rgba(124, 240, 255, 0.35);
+		background: linear-gradient(160deg, rgba(124, 240, 255, 0.18), rgba(124, 240, 255, 0.06));
+	}
+
+	[data-theme="dark"] .club-cal__month-matrix :global(.club-cal__cell--busy.club-cal__cell--tipo-club:not(.club-cal__cell--tipo-competicion):not(.club-cal__cell--tipo-examen):not(.club-cal__cell--tipo-evento)) {
+		border-color: rgba(167, 139, 250, 0.38);
+		background: linear-gradient(160deg, rgba(139, 92, 246, 0.24), rgba(139, 92, 246, 0.08));
+	}
+
+	.club-cal__month-matrix :global(.club-cal__cell--today) {
+		border-color: rgba(14, 116, 144, 0.55);
+		box-shadow: 0 0 0 2px rgba(14, 116, 144, 0.15);
+	}
+
+	.club-cal__month-matrix :global(.club-cal__num) {
+		display: block;
+		width: 100%;
+		align-self: stretch;
+		text-align: center;
+		font-size: 0.88rem;
+		font-weight: 800;
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+		color: var(--text);
+		box-sizing: border-box;
+	}
+
+	.club-cal__month-matrix :global(.club-cal__tipo-strip) {
+		display: flex;
+		width: 100%;
+		min-height: 6px;
+		border-radius: 6px;
+		overflow: hidden;
+		margin-top: auto;
+		gap: 3px;
+		box-sizing: border-box;
+	}
+
+	.club-cal__month-matrix :global(.club-cal__tipo-seg) {
+		flex: 1;
+		min-width: 6px;
+		min-height: 6px;
+		border-radius: 4px;
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+	}
+
+	[data-theme="dark"] .club-cal__month-matrix :global(.club-cal__tipo-seg) {
+		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+	}
+
+	.club-cal__month-matrix :global(.club-cal__tipo-seg--competicion) {
+		background: linear-gradient(180deg, #dc2626, #b91c1c);
+	}
+
+	.club-cal__month-matrix :global(.club-cal__tipo-seg--examen) {
+		background: linear-gradient(180deg, #14b8a6, #0d9488);
+	}
+
+	.club-cal__month-matrix :global(.club-cal__tipo-seg--evento) {
+		background: linear-gradient(180deg, #0891b2, #0e7490);
+	}
+
+	.club-cal__month-matrix :global(.club-cal__tipo-seg--club) {
+		background: linear-gradient(180deg, #7c3aed, #6d28d9);
+	}
+
+	[data-theme="dark"] .club-cal__month-matrix :global(.club-cal__tipo-seg--competicion) {
+		background: linear-gradient(180deg, #fb7185, #e11d48);
+	}
+
+	[data-theme="dark"] .club-cal__month-matrix :global(.club-cal__tipo-seg--examen) {
+		background: linear-gradient(180deg, #5eead4, #14b8a6);
+	}
+
+	[data-theme="dark"] .club-cal__month-matrix :global(.club-cal__tipo-seg--evento) {
+		background: linear-gradient(180deg, #7cf0ff, #0e7490);
+	}
+
+	[data-theme="dark"] .club-cal__month-matrix :global(.club-cal__tipo-seg--club) {
+		background: linear-gradient(180deg, #c4b5fd, #7c3aed);
+	}
+
+	.club-cal__month-matrix :global(.club-cal__dots) {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
+		justify-content: center;
+		align-self: center;
+		max-width: 100%;
+	}
+
+	.club-cal__month-matrix :global(.club-cal__dots .club-cal__dot) {
+		width: 9px;
+		height: 9px;
+		box-sizing: border-box;
+	}
+
+	@media (min-width: 640px) {
+		.club-cal__month-matrix :global(.club-cal__cell) {
+			min-height: 64px;
+			padding: 8px;
+		}
+
+		.club-cal__month-matrix :global(.club-cal__num) {
+			font-size: 0.95rem;
+		}
+	}
+
+	.club-cal__year-grid {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+		gap: var(--space-sm);
+	}
+
+	.club-cal__year-grid :global(.club-cal__mini) {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 8px;
+		padding: 10px 10px 12px;
+		border-radius: 16px;
+		border: 1px solid var(--border-subtle);
+		background: rgba(255, 255, 255, 0.4);
+		cursor: pointer;
+		text-align: left;
+		font: inherit;
+		color: inherit;
+		transition:
+			transform 0.2s var(--ease-out-expo),
+			border-color 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	[data-theme="dark"] .club-cal__year-grid :global(.club-cal__mini) {
+		background: rgba(255, 255, 255, 0.03);
+	}
+
+	.club-cal__year-grid :global(.club-cal__mini:hover) {
+		transform: translateY(-3px);
+		border-color: rgba(225, 29, 72, 0.35);
+		box-shadow: 0 16px 40px -28px var(--accent-glow);
+	}
+
+	.club-cal__year-grid :global(.club-cal__mini--has-events) {
+		border-color: rgba(225, 29, 72, 0.22);
+	}
+
+	.club-cal__year-grid :global(.club-cal__mini-title) {
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 0.78rem;
+		text-transform: capitalize;
+		color: var(--text);
+	}
+
+	.club-cal__year-grid :global(.club-cal__mini-grid) {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		gap: 2px;
+	}
+
+	.club-cal__year-grid :global(.club-cal__mini-cell) {
+		aspect-ratio: 1;
+		max-height: 10px;
+		border-radius: 2px;
+		background: rgba(0, 0, 0, 0.06);
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+	}
+
+	[data-theme="dark"] .club-cal__year-grid :global(.club-cal__mini-cell) {
+		background: rgba(255, 255, 255, 0.06);
+	}
+
+	.club-cal__year-grid :global(.club-cal__mini-cell--pad) {
+		background: transparent !important;
+	}
+
+	.club-cal__year-grid :global(.club-cal__mini-cell--busy) {
+		background: rgba(225, 29, 72, 0.18);
+	}
+
+	[data-theme="dark"] .club-cal__year-grid :global(.club-cal__mini-cell--busy) {
+		background: rgba(255, 51, 85, 0.22);
+	}
+
+	.club-cal__year-grid :global(.club-cal__mini-cell--today) {
+		box-shadow: inset 0 0 0 1px rgba(14, 116, 144, 0.75);
+	}
+
+	.club-cal__year-grid :global(.club-cal__mini-cell .club-cal__dot) {
+		width: 5px;
+		height: 5px;
+	}
+
+	.club-cal__list-section {
+		position: relative;
+	}
+
+	.club-cal__list-head {
+		margin-bottom: var(--space-md);
+	}
+
+	.club-cal__list-title {
+		margin: 0 0 0.35rem;
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 1.2rem;
+		letter-spacing: -0.02em;
+	}
+
+	.club-cal__list-sub {
+		margin: 0;
+		font-size: 0.92rem;
+		color: var(--text-muted);
+		line-height: 1.45;
+		max-width: 48ch;
+	}
+
+	.club-cal__empty {
+		margin: 0 0 var(--space-md);
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--text-muted);
+	}
+
+	.club-cal__empty.is-hidden {
+		display: none !important;
+	}
+
+	.club-cal__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.club-cal__list :global(.club-cal__month-block) {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.club-cal__list :global(.club-cal__month-block-title) {
+		margin: 0 0 var(--space-sm);
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 1rem;
+		text-transform: capitalize;
+		letter-spacing: -0.02em;
+		color: var(--text);
+		border-bottom: 1px solid var(--border-subtle);
+		padding-bottom: 0.45rem;
+	}
+
+	.club-cal__list :global(.club-cal__nested-list) {
+		margin-bottom: var(--space-md);
+	}
+
+	/* Tarjetas de evento (misma base que la página anterior) */
+	:global(.club-cal .cal-item) {
+		display: grid;
+		grid-template-columns: minmax(0, 140px) minmax(0, 1fr);
+		gap: var(--space-md);
+		align-items: start;
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border-subtle);
+		background: var(--cal-card-bg);
+	}
+
+	@media (max-width: 560px) {
+		:global(.club-cal .cal-item) {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	:global(.club-cal .cal-item__dates) {
+		font-size: 0.82rem;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+		color: var(--accent);
+		line-height: 1.35;
+	}
+
+	:global(.club-cal .cal-item__tag) {
+		display: inline-flex;
+		margin-bottom: 0.45rem;
+		padding: 0.2rem 0.55rem;
+		border-radius: var(--radius-full);
+		font-size: 0.65rem;
+		font-weight: 700;
+		letter-spacing: 0.055em;
+		text-transform: uppercase;
+		color: var(--cal-tag-neutral-text);
+		border: 1px solid var(--border-subtle);
+		background: var(--cal-meta-bg);
+	}
+
+	:global(.club-cal .cal-item__tag--competicion) {
+		border-color: rgba(225, 29, 72, 0.35);
+		color: var(--cal-comp-tag-fg);
+	}
+
+	:global(.club-cal .cal-item__tag--examen) {
+		border-color: rgba(14, 116, 144, 0.28);
+		color: var(--cal-examen-tag-fg);
+	}
+
+	:global(.club-cal .cal-item__tag--evento) {
+		border-color: var(--cal-tag-neutral-border);
+		color: var(--cal-evento-tag-fg);
+	}
+
+	:global(.club-cal .cal-item__tag--club) {
+		border-color: rgba(109, 40, 217, 0.28);
+		color: var(--cal-club-tag-fg);
+	}
+
+	:global(.club-cal .cal-item__title) {
+		margin: 0 0 0.45rem;
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 1.08rem;
+		line-height: 1.25;
+		letter-spacing: -0.02em;
+	}
+
+	:global(.club-cal .cal-item__desc) {
+		margin: 0 0 0.35rem;
+		font-size: 0.92rem;
+		color: var(--text-muted);
+		line-height: 1.52;
+	}
+
+	:global(.club-cal .cal-item__place) {
+		margin: 0;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		line-height: 1.45;
+	}
+
+	:global(.club-cal .cal-item__place strong) {
+		font-weight: 700;
+		color: var(--text-body);
+	}
+</style>

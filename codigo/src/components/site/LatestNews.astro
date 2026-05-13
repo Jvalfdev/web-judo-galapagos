@@ -1,0 +1,194 @@
+---
+import { Image } from "astro:assets";
+import { etiquetaTipoNoticia, getLatestNoticias } from "../../data/noticias";
+import imgNoticiaEjemplo from "../../assets/580478818_808493695365896_172975829185285327_n.jpg";
+
+const items = getLatestNoticias(4);
+
+function formatDate(iso: string) {
+	return new Date(iso + "T12:00:00").toLocaleDateString("es-EC", {
+		day: "numeric",
+		month: "short",
+		year: "numeric",
+	});
+}
+---
+
+<section id="ultimas-noticias" class="section section--news-preview" aria-labelledby="news-preview-title">
+	<div class="section__head section__head--news">
+		<div>
+			<p class="section__eyebrow">Actualidad</p>
+			<h2 id="news-preview-title" class="section__title">Últimas noticias</h2>
+			<p class="section__intro section__intro--narrow">
+				Novedades del tatami, competiciones y avisos del club. El detalle completo en la sección de noticias.
+			</p>
+		</div>
+		<a href="/noticias" class="news-preview__all">Ver todas</a>
+	</div>
+
+	<ul class="news-grid">
+		{
+			items.map((n) => (
+				<li class="news-card">
+					<a href={`/noticias/${n.slug}`} class="news-card__link">
+						<Image
+							src={imgNoticiaEjemplo}
+							alt=""
+							class="news-card__thumb"
+							width={320}
+							height={200}
+							sizes="(min-width: 960px) 240px, 100vw"
+							loading="lazy"
+							decoding="async"
+						/>
+						<time class="news-card__date" datetime={n.date}>
+							{formatDate(n.date)}
+						</time>
+						<span class="news-card__tag">{etiquetaTipoNoticia(n.tipoNoticia)}</span>
+						<h3 class="news-card__title">{n.title}</h3>
+						<p class="news-card__excerpt">{n.excerpt}</p>
+						<span class="news-card__more">Leer noticia</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.section--news-preview {
+		background:
+			radial-gradient(ellipse 65% 55% at 15% 10%, var(--news-preview-bg-spot), transparent 52%),
+			var(--bg-deep);
+	}
+
+	.section__head--news {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: var(--space-md);
+		max-width: none !important;
+		margin-bottom: var(--space-lg);
+	}
+
+	.news-preview__all {
+		display: inline-flex;
+		align-items: center;
+		height: 2.6rem;
+		padding: 0 1.2rem;
+		border-radius: var(--radius-full);
+		font-size: 0.88rem;
+		font-weight: 600;
+		text-decoration: none;
+		color: var(--btn-on-accent);
+		background: linear-gradient(135deg, var(--accent), #c9183a);
+		border: 1px solid rgba(255, 255, 255, 0.14);
+		box-shadow: 0 10px 36px -14px var(--accent-glow);
+		transition:
+			transform 0.25s var(--ease-out-expo),
+			filter 0.25s ease;
+	}
+
+	.news-preview__all:hover {
+		filter: brightness(1.06);
+		transform: translateY(-2px);
+	}
+
+	.news-grid {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1rem;
+	}
+
+	.news-card {
+		margin: 0;
+	}
+
+	.news-card__thumb {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: var(--radius-md);
+		object-fit: cover;
+		aspect-ratio: 16 / 10;
+		margin-bottom: var(--space-sm);
+		border: 1px solid var(--border-subtle);
+	}
+
+	.news-card__link {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--card-border);
+		background: var(--card-surface);
+		text-decoration: none;
+		color: inherit;
+		transition:
+			border-color 0.3s ease,
+			box-shadow 0.3s ease,
+			background 0.3s ease;
+	}
+
+	.news-card__link:hover {
+		border-color: var(--border-subtle);
+		background: var(--card-surface-hover);
+		box-shadow: var(--card-shadow);
+	}
+
+	.news-card__tag {
+		align-self: flex-start;
+		margin-bottom: 0.55rem;
+		padding: 0.22rem 0.55rem;
+		border-radius: var(--radius-full);
+		font-size: 0.65rem;
+		font-weight: 700;
+		letter-spacing: 0.055em;
+		text-transform: uppercase;
+		color: var(--text);
+		background: var(--accent-soft);
+		border: 1px solid var(--footer-border-accent);
+	}
+
+	.news-card__date {
+		margin-bottom: 0.45rem;
+		font-size: 0.78rem;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		color: var(--accent);
+	}
+
+	.news-card__title {
+		margin: 0 0 0.5rem;
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 1.08rem;
+		line-height: 1.2;
+		letter-spacing: -0.022em;
+	}
+
+	.news-card__excerpt {
+		margin: 0 0 var(--space-sm);
+		flex-grow: 1;
+		font-size: 0.9rem;
+		color: var(--text-muted);
+		line-height: 1.5;
+	}
+
+	.news-card__more {
+		font-size: 0.82rem;
+		font-weight: 700;
+		color: var(--ice);
+		opacity: 0.95;
+	}
+
+	.news-card__link:hover .news-card__more {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+</style>

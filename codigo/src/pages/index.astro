@@ -2,21 +2,20 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/site/Header.astro";
 import Hero from "../components/site/Hero.astro";
-import Philosophy from "../components/site/Philosophy.astro";
-import MasterTeaser from "../components/site/MasterTeaser.astro";
+import LatestNews from "../components/site/LatestNews.astro";
 import Schedule from "../components/site/Schedule.astro";
-import Events from "../components/site/Events.astro";
 import Footer from "../components/site/Footer.astro";
 ---
 
-<Layout>
+<Layout
+	title="Club de Judo Galápagos"
+	description="Club de Judo Galápagos (Galápagos, Guadalajara): horarios, noticias, calendario del club y datos de contacto."
+>
 	<Header />
 	<main id="contenido-principal" tabindex="-1">
 		<Hero />
-		<Philosophy />
-		<MasterTeaser />
+		<LatestNews />
 		<Schedule />
-		<Events />
 	</main>
 	<Footer />
 </Layout>
