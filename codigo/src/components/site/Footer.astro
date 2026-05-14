@@ -101,7 +101,13 @@ const urlInstagram = "https://www.instagram.com/escuela_judo_galapagos/";
 	</div>
 
 	<div class="footer__bar">
-		<p class="footer__copy">© {new Date().getFullYear()} Club de Judo Galápagos</p>
+		<div class="footer__bar-main">
+			<p class="footer__copy">© {new Date().getFullYear()} Club de Judo Galápagos</p>
+			<nav class="footer__legal" aria-label="Información legal">
+				<a href="/politica-cookies">Política de cookies</a>
+				<a href="/aviso-legal">Aviso legal</a>
+			</nav>
+		</div>
 		<a href="/#contenido-principal" class="footer__top">Volver arriba</a>
 	</div>
 </footer>
@@ -292,16 +298,52 @@ const urlInstagram = "https://www.instagram.com/escuela_judo_galapagos/";
 	.footer__bar {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: space-between;
-		gap: var(--space-sm);
+		gap: var(--space-md);
 		padding-top: var(--space-lg);
 		font-size: 0.82rem;
 		color: var(--text-muted);
 	}
 
+	.footer__bar-main {
+		display: flex;
+		flex-direction: column;
+		gap: 0.55rem;
+		min-width: 0;
+	}
+
+	@media (min-width: 540px) {
+		.footer__bar-main {
+			flex-direction: row;
+			flex-wrap: wrap;
+			align-items: baseline;
+			column-gap: 1.25rem;
+			row-gap: 0.45rem;
+		}
+	}
+
 	.footer__copy {
 		margin: 0;
+	}
+
+	.footer__legal {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.45rem 1.1rem;
+	}
+
+	.footer__legal a {
+		text-decoration: none;
+		font-weight: 600;
+		color: var(--footer-text-soft);
+		transition: color 0.2s ease;
+	}
+
+	.footer__legal a:hover {
+		color: var(--accent);
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
 	}
 
 	.footer__top {

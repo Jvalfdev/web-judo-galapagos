@@ -1,0 +1,158 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { telefonoHrefTel, telefonoTextoLegible } from "../data/contacto";
+
+const telHref = telefonoHrefTel();
+const telLabel = telefonoTextoLegible();
+---
+
+<PageLayout
+	title="Aviso legal"
+	description="Aviso legal del sitio web del Club de Judo Galápagos (información LSSI, condiciones de uso y contacto)."
+>
+	<div class="page-shell page-shell--narrow legal-doc">
+		<header class="page-hero">
+			<p class="page-hero__eyebrow">Información legal</p>
+			<h1 class="page-hero__title">Aviso legal</h1>
+			<p class="page-hero__lead">
+				Texto informativo sobre el titular del sitio, condiciones de uso del contenido y normativa aplicable. Es un{' '}
+				<strong>documento tipo</strong>: conviene revisarlo con asesoramiento profesional (gestor, federación o
+				abogado) para datos registrales definitivos (CIF/NIF, forma jurídica exacta, etc.).
+			</p>
+		</header>
+
+		<section class="page-block">
+			<h2>Datos identificativos del titular</h2>
+			<p>
+				<strong>Denominación:</strong> Club de Judo Galápagos / Escuela de Judo y Defensa Personal Galápagos (según
+				uso en redes y comunicación del club).
+			</p>
+			<p>
+				<strong>Domicilio a efectos de contacto:</strong> C. del Silo, 2 · 19174 Galápagos (Guadalajara), España.
+			</p>
+			<p>
+				<strong>Teléfono:</strong>{' '}
+				<a href={telHref}>{telLabel}</a>
+			</p>
+			<p>
+				<strong>Correo electrónico:</strong> no figura obligatorio en esta web; puede establecerse uno institucional
+				y actualizar este apartado cuando lo tengáis.
+			</p>
+			<p class="legal-highlight">
+				Si el club dispone de <strong>CIF/NIF</strong>, datos registrales en federación o forma jurídica concreta
+				(asociación deportiva, etc.), debe incorporarse aquí para cumplir con la información general exigible.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Objeto y condiciones de uso</h2>
+			<p>
+				Este sitio web tiene <strong>finalidad informativa</strong> sobre actividades, horarios, ubicación y vida del
+				club. El acceso implica la aceptación de este aviso y del uso responsable de los contenidos.
+			</p>
+			<p>
+				El titular puede modificar la configuración, la información y los contenidos del sitio cuando lo estime
+				oportuno, sin perjuicio de mantener la información esencial actualizada en la medida de lo posible.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Propiedad intelectual e industrial</h2>
+			<p>
+				Los textos, logotipos, imágenes y diseño del sitio son titularidad del club o se utilizan con la autorización
+				correspondiente. Queda prohibida la reproducción, distribución o transformación no autorizada con fines
+				comerciales o que lesionen el interés legítimo del titular, sin perjuicio de los límites legales (cita,
+				enseñanza, etc.).
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Enlaces externos</h2>
+			<p>
+				Pueden existir enlaces a sitios de terceros (por ejemplo redes sociales o WhatsApp). El titular no responde
+				del contenido ni de la política de privacidad de dichos sitios; el usuario accede bajo su propia
+				responsabilidad.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Exclusión de garantías y responsabilidad</h2>
+			<p>
+				Se trabaja para mantener la web disponible y libre de errores graves, pero no puede garantizarse un
+				funcionamiento ininterrumpido. El titular no será responsable, en la medida permitida por la ley, de daños
+				derivados del uso de la información publicada o de la imposibilidad temporal de acceso al sitio.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Protección de datos personales</h2>
+			<p>
+				Esta web <strong>no incluye formularios</strong> de recogida de datos personales. Quien contacte por{' '}
+				<strong>teléfono o WhatsApp</strong> lo hace de forma voluntaria; el tratamiento de esos datos quedará
+				sujeto a lo que acordéis con la persona interesada y a la normativa vigente (RGPD y Ley Orgánica 3/2018).
+			</p>
+			<p>
+				Para ampliar información sobre tecnologías en el navegador (tema visual, pantalla de bienvenida, etc.), véase
+				la <a href="/politica-cookies">política de cookies</a>.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Ley aplicable y jurisdicción</h2>
+			<p>
+				El presente aviso se rige por la legislación española. Para cualquier controversia serán competentes los
+				juzgados y tribunales de España, salvo normas imperativas en materia de consumidores y usuarios que otorguen
+				otro fuero.
+			</p>
+			<p>
+				Cumplimiento de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio
+				electrónico (LSSI-CE), en lo que resulte aplicable a este sitio.
+			</p>
+		</section>
+
+		<section class="page-block legal-doc__footer">
+			<p>
+				Última actualización orientativa: <strong>mayo de 2026</strong>.
+			</p>
+			<p>
+				<a href="/politica-cookies">Política de cookies</a>
+				· <a href="/">Inicio</a>
+			</p>
+		</section>
+	</div>
+</PageLayout>
+
+<style>
+	.page-shell--narrow {
+		max-width: 42rem;
+		margin-inline: auto;
+	}
+
+	.legal-highlight {
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		border: 1px dashed var(--border-subtle);
+		background: var(--promo-row-bg);
+		font-size: 0.94rem;
+		color: var(--text-muted);
+		line-height: 1.55;
+	}
+
+	.legal-doc__footer {
+		padding-top: var(--space-md);
+		border-top: 1px solid var(--border-subtle);
+		font-size: 0.92rem;
+		color: var(--text-muted);
+	}
+
+	.legal-doc a {
+		color: var(--ice);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.legal-doc a:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+</style>

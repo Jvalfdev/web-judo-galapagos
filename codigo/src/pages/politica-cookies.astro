@@ -1,0 +1,119 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+---
+
+<PageLayout
+	title="Política de cookies"
+	description="Política de cookies y tecnologías similares del sitio web del Club de Judo Galápagos."
+>
+	<div class="page-shell page-shell--narrow legal-doc">
+		<header class="page-hero">
+			<p class="page-hero__eyebrow">Transparencia</p>
+			<h1 class="page-hero__title">Política de cookies</h1>
+			<p class="page-hero__lead">
+				En esta página explicamos cómo funciona este sitio respecto a <strong>cookies</strong> y tecnologías
+				parecidas (almacenamiento en tu navegador).
+			</p>
+		</header>
+
+		<section class="page-block">
+			<h2>¿Usamos cookies de analítica o publicidad?</h2>
+			<p>
+				<strong>No instalamos cookies propias</strong> para medir visitas, perfilar usuarios ni mostrar publicidad.
+				No utilizamos Google Analytics ni herramientas equivalentes en esta web.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Tecnologías similares en tu dispositivo (localStorage y sessionStorage)</h2>
+			<p>
+				La web puede guardar preferencias en el navegador mediante mecanismos distintos de las cookies HTTP:
+			</p>
+			<ul class="page-list">
+				<li>
+					<strong>Tema claro u oscuro</strong> (<code>localStorage</code>, clave orientativa <code>jg-theme</code>):
+					recuerda tu elección de visualización al volver en otro día.
+				</li>
+				<li>
+					<strong>Pantalla de bienvenida del escudo</strong> (<code>sessionStorage</code>, clave orientativa{' '}
+					<code>jg-splash-seen</code>): evita repetir la misma animación varias veces en la misma sesión del
+					navegador (se borra al cerrar la pestaña).
+				</li>
+			</ul>
+			<p>
+				Estos datos <strong>no nos los envían automáticamente</strong>: permanecen en tu equipo. Puedes borrarlos
+				desde la configuración del navegador (datos del sitio / almacenamiento local).
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Fuentes y otros servicios de terceros</h2>
+			<p>
+				Las tipografías se cargan desde <strong>Google Fonts</strong> (servidores de Google). Es posible que esos
+				accesos queden registrados por Google según su propia política; puedes consultar la información que Google
+				ofrece sobre privacidad en{' '}
+				<a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noopener noreferrer">
+					policies.google.com/privacy
+				</a>
+				.
+			</p>
+			<p>
+				Los enlaces a <strong>WhatsApp</strong>, <strong>Facebook</strong> e <strong>Instagram</strong> llevan a
+				sitios externos; allí aplican las políticas de cada plataforma.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Cómo gestionar o eliminar datos</h2>
+			<p>
+				Puedes configurar tu navegador para bloquear cookies o borrar datos almacenados por este sitio. Las opciones
+				varían según el programa (Chrome, Firefox, Safari, Edge…): suele encontrarse en «Privacidad», «Cookies» o
+				«Datos del sitio».
+			</p>
+		</section>
+
+		<section class="page-block legal-doc__footer">
+			<p>
+				Última actualización orientativa: <strong>mayo de 2026</strong>. El club puede ajustar esta política si
+				añade nuevas funciones en la web; revisa esta página de vez en cuando.
+			</p>
+			<p>
+				<a href="/aviso-legal">Aviso legal</a>
+				· <a href="/">Inicio</a>
+			</p>
+		</section>
+	</div>
+</PageLayout>
+
+<style>
+	.page-shell--narrow {
+		max-width: 42rem;
+		margin-inline: auto;
+	}
+
+	.legal-doc :global(code) {
+		font-size: 0.88em;
+		padding: 0.12rem 0.35rem;
+		border-radius: 6px;
+		background: var(--toggle-bg);
+		border: 1px solid var(--border-subtle);
+	}
+
+	.legal-doc__footer {
+		padding-top: var(--space-md);
+		border-top: 1px solid var(--border-subtle);
+		font-size: 0.92rem;
+		color: var(--text-muted);
+	}
+
+	.legal-doc a {
+		color: var(--ice);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.legal-doc a:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+</style>
