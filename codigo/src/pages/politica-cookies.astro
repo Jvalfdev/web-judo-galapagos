@@ -31,13 +31,13 @@ import PageLayout from "../layouts/PageLayout.astro";
 			</p>
 			<ul class="page-list">
 				<li>
-					<strong>Tema claro u oscuro</strong> (<code>localStorage</code>, clave orientativa <code>jg-theme</code>):
-					recuerda tu elección de visualización al volver en otro día.
+					<strong>Tema claro u oscuro</strong>: se guarda en <code>localStorage</code> bajo la clave técnica{' '}
+					<code>jg-theme</code>, para recordar su preferencia en visitas posteriores.
 				</li>
 				<li>
-					<strong>Pantalla de bienvenida del escudo</strong> (<code>sessionStorage</code>, clave orientativa{' '}
-					<code>jg-splash-seen</code>): evita repetir la misma animación varias veces en la misma sesión del
-					navegador (se borra al cerrar la pestaña).
+					<strong>Pantalla de bienvenida del escudo</strong>: se usa <code>sessionStorage</code> con la clave{' '}
+					<code>jg-splash-seen</code>, para no repetir la misma presentación varias veces en la misma sesión del
+					navegador (los datos se eliminan al cerrar la pestaña).
 				</li>
 			</ul>
 			<p>
@@ -74,8 +74,8 @@ import PageLayout from "../layouts/PageLayout.astro";
 
 		<section class="page-block legal-doc__footer">
 			<p>
-				Última actualización orientativa: <strong>mayo de 2026</strong>. El club puede ajustar esta política si
-				añade nuevas funciones en la web; revisa esta página de vez en cuando.
+				Última actualización: <strong>mayo de 2026</strong>. El titular del sitio podrá revisar este texto si la web
+				incorpora nuevas funciones que afecten al almacenamiento local o a servicios de terceros.
 			</p>
 			<p>
 				<a href="/aviso-legal">Aviso legal</a>
