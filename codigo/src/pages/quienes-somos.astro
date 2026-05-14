@@ -1,0 +1,144 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+---
+
+<PageLayout
+	title="Quiénes somos"
+	description="Historia del Club de Judo Galápagos: desde 2003 en el tatami, club constituido en 2011, homologado por la RFEJ y vinculado a la Federación Manchega de Judo."
+>
+	<div class="page-shell page-shell--wide">
+		<header class="page-hero">
+			<p class="page-hero__eyebrow">El club</p>
+			<h1 class="page-hero__title">Quiénes somos</h1>
+			<p class="page-hero__lead">
+				Llevamos formando en judo y valores desde <strong>2003</strong>; la entidad se constituyó oficialmente en{' '}
+				<strong>2011</strong>. Somos una escuela de <strong>judo y defensa personal</strong> homologada por la{' '}
+				<strong>Real Federación Española de Judo</strong>, con presencia activa en la{' '}
+				<strong>Federación Manchega de Judo</strong>.
+			</p>
+		</header>
+
+		<div class="about-milestones" aria-label="Hitos del club">
+			<div class="about-milestone">
+				<span class="about-milestone__year">2003</span>
+				<p class="about-milestone__text">Inicio continuado de la enseñanza en tatami: clases, valores y varias generaciones de alumnos.</p>
+			</div>
+			<div class="about-milestone">
+				<span class="about-milestone__year">2011</span>
+				<p class="about-milestone__text">Constitución oficial del club, culminación de una trayectoria previa ligada al judo.</p>
+			</div>
+		</div>
+
+		<section class="page-block">
+			<h2>Orígenes y trayectoria</h2>
+			<p>
+				Nuestro club nace oficialmente en <strong>2011</strong>, pero la historia formativa es anterior: desde{' '}
+				<strong>2003</strong> venimos impartiendo clases y transmitiendo el judo con una idea clara — crear un espacio de{' '}
+				<strong>aprendizaje, respeto y superación</strong>. Esa línea continúa hoy: formación seria, ambiente seguro y trabajo
+				diario sobre técnica y actitud.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Homologación y calidad</h2>
+			<p>
+				Somos club <strong>homologado por la Real Federación Española de Judo (RFEJ)</strong>. Eso implica seguir criterios de
+				calidad y seguridad reconocidos a nivel nacional: metodología acorde al reglamento, grados y exámenes enmarcados en la
+				vía federativa, y un marco claro para familias y deportistas.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Equipo técnico y especialidades</h2>
+			<p>
+				Contamos con <strong>maestros federados y colegiados</strong> a nivel nacional: profesionales con experiencia que enseñan
+				técnica y, sobre todo, los principios del judo — <em>disciplina, humildad, esfuerzo y compañerismo</em>.
+			</p>
+			<p>La formación se complementa con especialistas en:</p>
+			<ul class="page-list about-list">
+				<li><strong>Defensa personal policial (DPP)</strong></li>
+				<li><strong>Defensa personal operativa (DPO)</strong></li>
+				<li><strong>Defensa extensible</strong></li>
+			</ul>
+			<p>
+				Esa combinación permite adaptarnos tanto a la <strong>práctica deportiva federada</strong> como a necesidades
+				formativas más específicas, incluidas las de colectivos profesionales relacionados con la seguridad.
+			</p>
+			<p>
+				Entre el equipo también hay <strong>jueces nacionales de katas</strong>, reflejo del compromiso con la vertiente más
+				tradicional y reglada del judo.
+			</p>
+		</section>
+
+		<section class="page-block">
+			<h2>Castilla-La Mancha</h2>
+			<p>
+				Formamos parte activa de la <strong>Federación Manchega de Judo</strong>: participamos en sus programas, actividades y
+				competiciones, y sumamos al desarrollo del judo en la comunidad desde Galápagos (Guadalajara).
+			</p>
+		</section>
+
+		<section class="page-block about-closing">
+			<h2>Nuestro objetivo</h2>
+			<p>
+				Sigue siendo el mismo que al inicio: ofrecer un lugar donde <strong>niños, jóvenes y adultos</strong> puedan aprender,
+				crecer y disfrutar del judo en un entorno <strong>seguro, federado</strong> y arraigado en valores. Si quieres conocernos
+				en persona, revisa los <a href="/#horarios">horarios</a> en la página principal o escríbenos desde{' '}
+				<a href="/#contacto">contacto</a>.
+			</p>
+		</section>
+	</div>
+</PageLayout>
+
+<style>
+	.about-milestones {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: var(--space-md);
+		margin: 0 0 var(--space-xl);
+	}
+
+	.about-milestone {
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border-subtle);
+		background: var(--promo-row-bg);
+		box-shadow: 0 14px 40px -28px rgba(0, 0, 0, 0.22);
+	}
+
+	.about-milestone__year {
+		display: inline-block;
+		margin-bottom: 0.45rem;
+		padding: 0.2rem 0.55rem;
+		border-radius: var(--radius-full);
+		font-size: 0.72rem;
+		font-weight: 800;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--btn-on-accent);
+		background: linear-gradient(135deg, var(--accent), #c9183a);
+		border: 1px solid rgba(255, 255, 255, 0.14);
+	}
+
+	.about-milestone__text {
+		margin: 0;
+		font-size: 0.95rem;
+		line-height: 1.52;
+		color: var(--text-muted);
+	}
+
+	.about-list li {
+		margin-bottom: 0.35rem;
+	}
+
+	.about-closing a {
+		color: var(--ice);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.about-closing a:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+</style>
