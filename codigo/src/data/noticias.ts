@@ -42,6 +42,7 @@ export const noticias: Noticia[] = [
 			"El 15 de junio, ceremonia de entrega de cinturón en El Silo. El horario se confirmará próximamente.",
 		date: "2026-06-15",
 		tipoNoticia: "convocatoria",
+		eventoCalendarioId: "ceremonia-cinturon-2026",
 		paragraphs: [
 			"El domingo 15 de junio el Club de Judo Galápagos celebra la ceremonia de entrega de cinturón, un momento especial para reconocer el esfuerzo y la progresión de nuestros judokas.",
 			"El acto tendrá lugar en El Silo. Invitamos a familias y amigos del club a acompañarnos. El horario aún no está confirmado; os lo comunicaremos en cuanto lo tengamos a través de los canales habituales del club.",

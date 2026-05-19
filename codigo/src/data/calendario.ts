@@ -20,44 +20,13 @@ export type EntradaCalendario = {
 
 export const entradasCalendario: EntradaCalendario[] = [
 	{
-		id: "evt-1",
-		fechaInicio: "2026-06-01",
-		titulo: "Evento de ejemplo 1",
-		tipo: "competicion",
-		descripcion: "Descripción genérica del evento de ejemplo 1.",
-		lugar: "Lugar por definir",
-	},
-	{
-		id: "evt-2",
-		fechaInicio: "2026-07-10",
-		titulo: "Evento de ejemplo 2",
+		id: "ceremonia-cinturon-2026",
+		fechaInicio: "2026-06-15",
+		titulo: "Ceremonia de entrega de cinturón",
 		tipo: "examen",
-		descripcion: "Descripción genérica del evento de ejemplo 2.",
-		lugar: "Lugar por definir",
-	},
-	{
-		id: "evt-3",
-		fechaInicio: "2026-08-05",
-		fechaFin: "2026-08-07",
-		titulo: "Evento de ejemplo 3 (varios días)",
-		tipo: "evento",
-		descripcion: "Descripción genérica del evento de ejemplo 3.",
-		lugar: "Lugar por definir",
-	},
-	{
-		id: "evt-4",
-		fechaInicio: "2026-09-20",
-		titulo: "Evento de ejemplo 4",
-		tipo: "competicion",
-		descripcion: "Descripción genérica del evento de ejemplo 4.",
-	},
-	{
-		id: "evt-5",
-		fechaInicio: "2026-10-15",
-		titulo: "Evento de ejemplo 5",
-		tipo: "club",
-		descripcion: "Descripción genérica del evento de ejemplo 5.",
-		lugar: "Lugar por definir",
+		descripcion:
+			"Ceremonia de entrega de cinturón del club. Horario por confirmar; el acto será en El Silo.",
+		lugar: "El Silo",
 	},
 ];
 
