@@ -1,5 +1,13 @@
 ---
+import type { ImageMetadata } from "astro";
 import PageLayout from "../layouts/PageLayout.astro";
+import { Image } from "astro:assets";
+
+const fotosMiembros = Object.entries(
+	import.meta.glob<{ default: ImageMetadata }>("../assets/WhatsApp Image*.jpeg", { eager: true }),
+)
+	.sort(([a], [b]) => a.localeCompare(b))
+	.map(([, mod]) => mod.default);
 ---
 
 <PageLayout
@@ -28,6 +36,30 @@ import PageLayout from "../layouts/PageLayout.astro";
 				<p class="about-milestone__text">Constitución oficial del club, culminación de una trayectoria previa ligada al judo.</p>
 			</div>
 		</div>
+
+		<section class="page-block">
+			<h2>Nuestros judokas</h2>
+			<p class="about-gallery__intro">
+				Algunos de los judokas que hoy forman el club, en sus primeros años sobre el tatami. La misma escuela,
+				varias generaciones.
+			</p>
+			<div class="about-gallery">
+				{
+					fotosMiembros.map((src, i) => (
+						<figure class="about-gallery__item">
+							<Image
+								src={src}
+								alt={`Judokas del club en su etapa infantil (${i + 1})`}
+								class="about-gallery__img"
+								sizes="(min-width: 720px) 30vw, 92vw"
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+					))
+				}
+			</div>
+		</section>
 
 		<section class="page-block">
 			<h2>Orígenes y trayectoria</h2>
@@ -140,5 +172,38 @@ import PageLayout from "../layouts/PageLayout.astro";
 	.about-closing a:hover {
 		text-decoration: underline;
 		text-underline-offset: 0.2em;
+	}
+
+	.about-gallery__intro {
+		margin: 0 0 var(--space-md);
+		max-width: 54rem;
+		line-height: 1.55;
+		color: var(--text-muted);
+		font-size: 0.98rem;
+	}
+
+	.about-gallery {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: var(--space-md);
+		margin-top: var(--space-sm);
+	}
+
+	.about-gallery__item {
+		margin: 0;
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		border: 1px solid var(--border-subtle);
+		background: var(--cal-card-bg);
+		box-shadow: 0 20px 56px -38px rgba(0, 0, 0, 0.35);
+	}
+
+	.about-gallery__img {
+		display: block;
+		width: 100%;
+		height: auto;
+		vertical-align: middle;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
 	}
 </style>
