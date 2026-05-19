@@ -2,7 +2,7 @@
 import PageLayout from "../../layouts/PageLayout.astro";
 import { Image } from "astro:assets";
 import { etiquetaTipoNoticia, noticias } from "../../data/noticias";
-import imgNoticiaEjemplo from "../../assets/580478818_808493695365896_172975829185285327_n.jpg";
+import imgEntregaCinturon from "../../assets/entrega-cinturon.jpg";
 
 const sorted = [...noticias].sort((a, b) => b.date.localeCompare(a.date));
 
@@ -35,8 +35,8 @@ function formatDate(iso: string) {
 					<li class="news-archive__item">
 						<a href={`/noticias/${n.slug}`} class="news-archive__link">
 							<Image
-								src={imgNoticiaEjemplo}
-								alt=""
+								src={imgEntregaCinturon}
+								alt="Ceremonia de entrega de cinturón del club"
 								class="news-archive__thumb"
 								width={280}
 								height={190}

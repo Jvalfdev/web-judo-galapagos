@@ -36,48 +36,15 @@ export function etiquetaTipoNoticia(t: TipoNoticia): string {
 
 export const noticias: Noticia[] = [
 	{
-		slug: "noticia-1",
-		title: "Noticia 1",
-		excerpt: "Texto breve de ejemplo para la noticia 1.",
-		date: "2026-05-01",
-		tipoNoticia: "informacion",
-		paragraphs: [
-			"Contenido de ejemplo para la noticia 1 (primer párrafo).",
-			"Contenido de ejemplo para la noticia 1 (segundo párrafo).",
-		],
-	},
-	{
-		slug: "noticia-2",
-		title: "Noticia 2",
-		excerpt: "Texto breve de ejemplo para la noticia 2.",
-		date: "2026-04-18",
-		tipoNoticia: "resultado",
-		paragraphs: [
-			"Contenido de ejemplo para la noticia 2 (primer párrafo).",
-			"Contenido de ejemplo para la noticia 2 (segundo párrafo).",
-		],
-	},
-	{
-		slug: "noticia-3",
-		title: "Noticia 3",
-		excerpt: "Texto breve de ejemplo para la noticia 3.",
-		date: "2026-04-02",
+		slug: "ceremonia-entrega-cinturon-2026",
+		title: "Ceremonia de entrega de cinturón",
+		excerpt:
+			"El 15 de junio celebramos la ceremonia de entrega de cinturón con las familias del club.",
+		date: "2026-06-15",
 		tipoNoticia: "convocatoria",
-		eventoCalendarioId: "evt-1",
 		paragraphs: [
-			"Contenido de ejemplo para la noticia 3 (primer párrafo).",
-			"Contenido de ejemplo para la noticia 3 (segundo párrafo).",
-		],
-	},
-	{
-		slug: "noticia-4",
-		title: "Noticia 4",
-		excerpt: "Texto breve de ejemplo para la noticia 4.",
-		date: "2026-03-15",
-		tipoNoticia: "informacion",
-		paragraphs: [
-			"Contenido de ejemplo para la noticia 4 (primer párrafo).",
-			"Contenido de ejemplo para la noticia 4 (segundo párrafo).",
+			"El domingo 15 de junio el Club de Judo Galápagos celebra la ceremonia de entrega de cinturón, un momento especial para reconocer el esfuerzo y la progresión de nuestros judokas.",
+			"Invitamos a familias y amigos del club a acompañarnos en esta jornada. Os confirmaremos horario y lugar en los próximos días a través de los canales habituales del club.",
 		],
 	},
 ];

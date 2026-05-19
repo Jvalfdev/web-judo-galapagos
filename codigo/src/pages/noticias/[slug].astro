@@ -3,7 +3,7 @@ import PageLayout from "../../layouts/PageLayout.astro";
 import { Image } from "astro:assets";
 import { getEntradaCalendarioPorId } from "../../data/calendario";
 import { etiquetaTipoNoticia, getNoticiaBySlug, noticias } from "../../data/noticias";
-import imgNoticiaEjemplo from "../../assets/580478818_808493695365896_172975829185285327_n.jpg";
+import imgEntregaCinturon from "../../assets/entrega-cinturon.jpg";
 
 export function getStaticPaths() {
 	return noticias.map((n) => ({ params: { slug: n.slug } }));
@@ -36,8 +36,8 @@ function formatDate(iso: string) {
 		</p>
 		<figure class="article-figure">
 			<Image
-				src={imgNoticiaEjemplo}
-				alt=""
+				src={imgEntregaCinturon}
+				alt="Ceremonia de entrega de cinturón del club"
 				class="article-figure__img"
 				sizes="(min-width: 880px) min(720px, 70vw), 100vw"
 				loading="eager"

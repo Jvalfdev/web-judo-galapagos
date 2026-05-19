@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { etiquetaTipoNoticia, getLatestNoticias } from "../../data/noticias";
-import imgNoticiaEjemplo from "../../assets/580478818_808493695365896_172975829185285327_n.jpg";
+import imgEntregaCinturon from "../../assets/entrega-cinturon.jpg";
 
 const items = getLatestNoticias(4);
 
@@ -32,8 +32,8 @@ function formatDate(iso: string) {
 				<li class="news-card">
 					<a href={`/noticias/${n.slug}`} class="news-card__link">
 						<Image
-							src={imgNoticiaEjemplo}
-							alt=""
+							src={imgEntregaCinturon}
+							alt="Ceremonia de entrega de cinturón del club"
 							class="news-card__thumb"
 							width={320}
 							height={200}
