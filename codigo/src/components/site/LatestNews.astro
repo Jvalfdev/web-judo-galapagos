@@ -35,9 +35,9 @@ function formatDate(iso: string) {
 							src={imgEntregaCinturon}
 							alt="Ceremonia de entrega de cinturón del club"
 							class="news-card__thumb"
-							width={320}
-							height={200}
-							sizes="(min-width: 960px) 240px, 100vw"
+							width={240}
+							height={160}
+							sizes="120px"
 							loading="lazy"
 							decoding="async"
 						/>
@@ -99,9 +99,10 @@ function formatDate(iso: string) {
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		display: flex;
+		flex-direction: column;
 		gap: 1rem;
+		max-width: 40rem;
 	}
 
 	.news-card {
@@ -110,19 +111,20 @@ function formatDate(iso: string) {
 
 	.news-card__thumb {
 		display: block;
+		grid-row: 1 / -1;
 		width: 100%;
-		height: auto;
+		max-height: 5.5rem;
 		border-radius: var(--radius-md);
 		object-fit: cover;
-		aspect-ratio: 16 / 10;
-		margin-bottom: var(--space-sm);
+		aspect-ratio: 4 / 3;
 		border: 1px solid var(--border-subtle);
 	}
 
 	.news-card__link {
-		display: flex;
-		flex-direction: column;
-		height: 100%;
+		display: grid;
+		grid-template-columns: minmax(0, 7.5rem) 1fr;
+		gap: var(--space-md);
+		align-items: start;
 		padding: var(--space-md);
 		border-radius: var(--radius-lg);
 		border: 1px solid var(--card-border);
@@ -142,6 +144,7 @@ function formatDate(iso: string) {
 	}
 
 	.news-card__tag {
+		grid-column: 2;
 		align-self: flex-start;
 		margin-bottom: 0.55rem;
 		padding: 0.22rem 0.55rem;
@@ -156,6 +159,7 @@ function formatDate(iso: string) {
 	}
 
 	.news-card__date {
+		grid-column: 2;
 		margin-bottom: 0.45rem;
 		font-size: 0.78rem;
 		font-weight: 600;
@@ -164,6 +168,7 @@ function formatDate(iso: string) {
 	}
 
 	.news-card__title {
+		grid-column: 2;
 		margin: 0 0 0.5rem;
 		font-family: var(--font-display);
 		font-weight: 800;
@@ -173,14 +178,15 @@ function formatDate(iso: string) {
 	}
 
 	.news-card__excerpt {
+		grid-column: 2;
 		margin: 0 0 var(--space-sm);
-		flex-grow: 1;
 		font-size: 0.9rem;
 		color: var(--text-muted);
 		line-height: 1.5;
 	}
 
 	.news-card__more {
+		grid-column: 2;
 		font-size: 0.82rem;
 		font-weight: 700;
 		color: var(--ice);

@@ -38,9 +38,9 @@ function formatDate(iso: string) {
 								src={imgEntregaCinturon}
 								alt="Ceremonia de entrega de cinturón del club"
 								class="news-archive__thumb"
-								width={280}
-								height={190}
-								sizes="(min-width: 720px) 200px, 100vw"
+								width={200}
+								height={150}
+								sizes="120px"
 								loading="lazy"
 								decoding="async"
 							/>
@@ -72,7 +72,7 @@ function formatDate(iso: string) {
 
 	.news-archive__link {
 		display: grid;
-		grid-template-columns: minmax(0, 140px) 1fr;
+		grid-template-columns: minmax(0, 7.5rem) 1fr;
 		gap: var(--space-md);
 		align-items: start;
 		padding: var(--space-md);
@@ -86,16 +86,10 @@ function formatDate(iso: string) {
 			background 0.25s ease;
 	}
 
-	@media (max-width: 520px) {
-		.news-archive__link {
-			grid-template-columns: 1fr;
-		}
-	}
-
 	.news-archive__thumb {
 		display: block;
 		width: 100%;
-		height: auto;
+		max-height: 5.5rem;
 		border-radius: var(--radius-md);
 		object-fit: cover;
 		aspect-ratio: 4 / 3;
