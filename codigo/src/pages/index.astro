@@ -12,10 +12,21 @@ import Footer from "../components/site/Footer.astro";
 	description="Club de Judo Galápagos (Galápagos, Guadalajara): horarios, noticias, calendario del club y datos de contacto."
 >
 	<Header />
-	<main id="contenido-principal" tabindex="-1">
+	<main id="contenido-principal" tabindex="-1" class="home-main">
 		<Hero />
-		<LatestNews />
-		<Schedule />
+		<div class="home-scroll-layer">
+			<LatestNews />
+			<Schedule />
+		</div>
 	</main>
-	<Footer />
+	<div class="home-scroll-layer">
+		<Footer />
+	</div>
 </Layout>
+
+<style>
+	.home-scroll-layer {
+		position: relative;
+		z-index: 2;
+	}
+</style>

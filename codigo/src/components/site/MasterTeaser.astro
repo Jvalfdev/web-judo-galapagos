@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import logoClub from "../../assets/logo mas detallago.jpg";
+import fotoMaestro from "../../assets/maestro.jpg";
 ---
 
 <section class="master" aria-labelledby="master-title">
@@ -8,12 +8,12 @@ import logoClub from "../../assets/logo mas detallago.jpg";
 		<div class="master__glow" aria-hidden="true"></div>
 		<div class="master__frame">
 			<Image
-				src={logoClub}
-				alt="Escudo — Club de Judo Galápagos"
-				class="master__logo"
+				src={fotoMaestro}
+				alt="Jose Andrés Ramos"
+				class="master__photo"
 				width={480}
-				height={480}
-				sizes="(min-width: 900px) min(42vw, 360px), min(72vw, 280px)"
+				height={640}
+				sizes="(min-width: 900px) 320px, min(72vw, 280px)"
 				loading="lazy"
 				decoding="async"
 			/>
@@ -21,30 +21,22 @@ import logoClub from "../../assets/logo mas detallago.jpg";
 	</div>
 	<div class="master__content">
 		<p class="master__eyebrow">Dirección técnica</p>
-		<h2 id="master-title" class="master__title">Jose Andres Ramos</h2>
-		<p class="master__text">Titulaciones y experiencia de Jose</p>
-		<span class="master__soon">Marcador de posición — página «El maestro»</span>
+		<h2 id="master-title" class="master__title">Jose Andrés Ramos</h2>
 	</div>
 </section>
 
 <style>
 	.master {
 		position: relative;
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-lg);
+		display: flex;
+		flex-direction: column;
 		align-items: center;
+		gap: var(--space-lg);
 		padding: var(--space-2xl) clamp(1rem, 5vw, 4rem);
 		border-top: 1px solid var(--border-subtle);
 		background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), transparent 45%);
 		overflow: hidden;
-	}
-
-	@media (min-width: 900px) {
-		.master {
-			grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-			gap: var(--space-xl);
-		}
+		text-align: center;
 	}
 
 	.master__visual {
@@ -52,49 +44,31 @@ import logoClub from "../../assets/logo mas detallago.jpg";
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		min-height: 220px;
-		border-radius: calc(var(--radius-lg) + 8px);
-	}
-
-	@media (min-width: 900px) {
-		.master__visual {
-			min-height: 320px;
-		}
+		width: 100%;
+		max-width: 320px;
 	}
 
 	.master__frame {
 		position: relative;
 		z-index: 1;
-		display: grid;
-		place-items: center;
-		width: min(100%, 320px);
-		margin-inline: auto;
-		aspect-ratio: 1;
-		padding: clamp(1rem, 4vw, 1.75rem);
-		border-radius: inherit;
+		width: 100%;
+		max-width: 320px;
+		aspect-ratio: 4 / 4.35;
+		padding: 0;
+		border-radius: var(--radius-lg);
 		border: 1px solid var(--border-subtle);
 		background: var(--master-frame-bg);
-		transform: rotate(-1.5deg);
-		transition: transform 0.45s var(--ease-out-expo);
+		overflow: hidden;
 		box-sizing: border-box;
 	}
 
-	@media (min-width: 900px) {
-		.master__frame {
-			width: min(100%, 360px);
-		}
-	}
-
-	.master:hover .master__frame {
-		transform: rotate(0deg) scale(1.01);
-	}
-
-	.master__logo {
+	.master__photo {
 		display: block;
 		width: 100%;
-		height: auto;
-		max-height: 100%;
-		object-fit: contain;
+		height: 108%;
+		max-width: none;
+		object-fit: cover;
+		object-position: center 8%;
 	}
 
 	.master__glow {
@@ -109,6 +83,8 @@ import logoClub from "../../assets/logo mas detallago.jpg";
 	.master__content {
 		position: relative;
 		z-index: 1;
+		width: 100%;
+		max-width: 28rem;
 	}
 
 	.master__eyebrow {
@@ -122,51 +98,11 @@ import logoClub from "../../assets/logo mas detallago.jpg";
 	}
 
 	.master__title {
-		margin: 0 0 var(--space-sm);
+		margin: 0;
 		font-family: var(--font-display);
 		font-weight: 800;
 		font-size: clamp(1.75rem, 3.5vw, 2.65rem);
 		line-height: 1.08;
 		letter-spacing: -0.028em;
-	}
-
-	.master__text {
-		margin: 0 0 var(--space-md);
-		max-width: 42rem;
-		font-size: 1.05rem;
-		color: var(--text-muted);
-		line-height: 1.65;
-	}
-
-	.master__soon {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.45rem 0.85rem;
-		border-radius: var(--radius-full);
-		font-size: 0.8rem;
-		font-weight: 600;
-		color: var(--text-muted);
-		border: 1px dashed var(--border-subtle);
-		background: var(--toggle-bg);
-	}
-
-	.master__soon::before {
-		content: "";
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: var(--accent);
-		box-shadow: 0 0 12px var(--accent-glow);
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.master__frame {
-			transition: none;
-		}
-
-		.master:hover .master__frame {
-			transform: rotate(-1.5deg);
-		}
 	}
 </style>

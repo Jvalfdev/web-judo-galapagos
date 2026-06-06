@@ -2,7 +2,6 @@
 import PageLayout from "../../layouts/PageLayout.astro";
 import { Image } from "astro:assets";
 import { etiquetaTipoNoticia, noticias } from "../../data/noticias";
-import imgEntregaCinturon from "../../assets/entrega-cinturon.jpg";
 
 const sorted = [...noticias].sort((a, b) => b.date.localeCompare(a.date));
 
@@ -34,16 +33,19 @@ function formatDate(iso: string) {
 				sorted.map((n) => (
 					<li class="news-archive__item">
 						<a href={`/noticias/${n.slug}`} class="news-archive__link">
-							<Image
-								src={imgEntregaCinturon}
-								alt="Ceremonia de entrega de cinturón del club"
-								class="news-archive__thumb"
-								width={280}
-								height={187}
-								sizes="176px"
-								loading="lazy"
-								decoding="async"
-							/>
+							<div class="news-archive__thumb-wrap">
+								<Image
+									src={n.image}
+									alt={n.imageAlt}
+									class="news-archive__thumb"
+									width={176}
+									height={303}
+									fit="contain"
+									sizes="176px"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
 							<div class="news-archive__body">
 								<time class="news-archive__date" datetime={n.date}>
 									{formatDate(n.date)}
@@ -86,14 +88,19 @@ function formatDate(iso: string) {
 			background 0.25s ease;
 	}
 
+	.news-archive__thumb-wrap {
+		align-self: start;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border-subtle);
+		background: var(--bg-deep);
+	}
+
 	.news-archive__thumb {
 		display: block;
 		width: 100%;
 		height: auto;
-		border-radius: var(--radius-md);
-		object-fit: cover;
-		aspect-ratio: 4 / 3;
-		border: 1px solid var(--border-subtle);
+		object-fit: contain;
+		object-position: center 30%;
 	}
 
 	.news-archive__body {

@@ -21,7 +21,7 @@ export type EntradaCalendario = {
 export const entradasCalendario: EntradaCalendario[] = [
 	{
 		id: "ceremonia-cinturon-2026",
-		fechaInicio: "2026-06-15",
+		fechaInicio: "2026-06-16",
 		titulo: "Ceremonia de entrega de cinturón",
 		tipo: "examen",
 		descripcion:

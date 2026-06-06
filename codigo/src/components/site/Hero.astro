@@ -1,17 +1,29 @@
 ---
-import { Image } from "astro:assets";
 import { urlWhatsApp } from "../../data/contacto";
-import fotoCompeticionAccion from "../../assets/580478818_808493695365896_172975829185285327_n.jpg";
+import heroVideo from "../../assets/hero-judo-galapagos.mp4";
 
 const waHref = urlWhatsApp();
 ---
+
+<div class="hero__video-wrap" aria-hidden="true">
+	<video
+		class="hero__video"
+		autoplay
+		muted
+		loop
+		playsinline
+		preload="auto"
+		tabindex="-1"
+	>
+		<source src={heroVideo} type="video/mp4" />
+	</video>
+	<div class="hero__video-overlay"></div>
+</div>
 
 <section class="hero" aria-labelledby="hero-title">
 	<div class="hero__bg" aria-hidden="true">
 		<div class="hero__mesh"></div>
 		<div class="hero__grid"></div>
-		<div class="hero__orb hero__orb--a"></div>
-		<div class="hero__orb hero__orb--b"></div>
 		<div class="hero__noise"></div>
 	</div>
 
@@ -30,23 +42,60 @@ const waHref = urlWhatsApp();
 				</a>
 			</div>
 		</div>
-
-		<figure class="hero__figure reveal" style="--d: 120ms">
-			<Image
-				src={fotoCompeticionAccion}
-				alt="Judoka del club en competición, ejecutando una técnica de proyección"
-				class="hero__photo"
-				sizes="(min-width: 960px) 42vw, min(92vw, 520px)"
-				loading="eager"
-				fetchpriority="high"
-			/>
-		</figure>
 	</div>
 </section>
 
 <style>
+	.hero__video-wrap {
+		position: fixed;
+		inset: 0;
+		z-index: 0;
+		height: 100dvh;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.hero__video {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	.hero__video-overlay {
+		position: absolute;
+		inset: 0;
+		background:
+			linear-gradient(
+				165deg,
+				rgba(8, 10, 18, 0.52) 0%,
+				rgba(8, 10, 18, 0.68) 45%,
+				rgba(8, 10, 18, 0.82) 100%
+			),
+			radial-gradient(ellipse 90% 70% at 50% 20%, transparent 30%, rgba(8, 10, 18, 0.35) 100%);
+	}
+
+	[data-theme="dark"] .hero__video-overlay {
+		background:
+			linear-gradient(
+				165deg,
+				rgba(4, 5, 10, 0.62) 0%,
+				rgba(4, 5, 10, 0.78) 45%,
+				rgba(4, 5, 10, 0.9) 100%
+			),
+			radial-gradient(ellipse 90% 70% at 50% 20%, transparent 25%, rgba(4, 5, 10, 0.45) 100%);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero__video-wrap {
+			display: none;
+		}
+	}
+
 	.hero {
 		position: relative;
+		z-index: 1;
 		min-height: 100dvh;
 		display: flex;
 		align-items: center;
@@ -99,48 +148,6 @@ const waHref = urlWhatsApp();
 		opacity: 0.65;
 	}
 
-	.hero__orb {
-		position: absolute;
-		border-radius: 50%;
-		filter: blur(80px);
-		opacity: 0.5;
-		animation: orb-float 18s ease-in-out infinite;
-	}
-
-	.hero__orb--a {
-		width: min(48vw, 420px);
-		height: min(48vw, 420px);
-		left: -10%;
-		top: 15%;
-		background: var(--accent);
-	}
-
-	.hero__orb--b {
-		width: min(38vw, 360px);
-		height: min(38vw, 360px);
-		right: -5%;
-		bottom: 10%;
-		background: var(--ice);
-		animation-delay: -6s;
-		opacity: 0.22;
-	}
-
-	@keyframes orb-float {
-		0%,
-		100% {
-			transform: translate3d(0, 0, 0);
-		}
-		50% {
-			transform: translate3d(4%, -3%, 0);
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.hero__orb {
-			animation: none;
-		}
-	}
-
 	.hero__noise {
 		position: absolute;
 		inset: 0;
@@ -153,49 +160,13 @@ const waHref = urlWhatsApp();
 		position: relative;
 		z-index: 1;
 		width: 100%;
-		max-width: 1120px;
+		max-width: 42rem;
 		margin: 0 auto;
-		display: grid;
-		gap: var(--space-xl);
-		align-items: center;
-	}
-
-	@media (min-width: 960px) {
-		.hero__layout {
-			grid-template-columns: minmax(0, 1fr) minmax(260px, 0.92fr);
-			gap: clamp(1.5rem, 4vw, 3rem);
-		}
 	}
 
 	.hero__inner {
 		position: relative;
 		z-index: 1;
-		max-width: 38rem;
-	}
-
-	.hero__figure {
-		margin: 0;
-		border-radius: var(--radius-lg);
-		overflow: hidden;
-		border: 1px solid var(--border-subtle);
-		box-shadow:
-			0 28px 90px -42px rgba(0, 0, 0, 0.38),
-			0 0 0 1px rgba(255, 255, 255, 0.04);
-	}
-
-	.hero__photo {
-		display: block;
-		width: 100%;
-		height: auto;
-		vertical-align: middle;
-	}
-
-	@media (max-width: 959px) {
-		.hero__figure {
-			max-width: 520px;
-			width: 100%;
-			justify-self: center;
-		}
 	}
 
 	.hero__title {
@@ -205,13 +176,15 @@ const waHref = urlWhatsApp();
 		font-size: clamp(2.65rem, 7vw, 4.75rem);
 		line-height: 1.02;
 		letter-spacing: -0.028em;
+		color: #fff;
+		text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
 	}
 
 	.hero__lead {
 		margin: 0 0 var(--space-lg);
 		max-width: 38rem;
 		font-size: 1.06rem;
-		color: var(--text-muted);
+		color: rgba(255, 255, 255, 0.88);
 		line-height: 1.58;
 		letter-spacing: -0.012em;
 	}

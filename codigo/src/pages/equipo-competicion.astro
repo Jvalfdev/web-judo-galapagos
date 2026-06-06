@@ -3,27 +3,35 @@ import PageLayout from "../layouts/PageLayout.astro";
 import MasterTeaser from "../components/site/MasterTeaser.astro";
 import { Image } from "astro:assets";
 import fotoEquipoCompeticion from "../assets/equipocompeticion2.jpg";
-import fotoJudokaEjemplo from "../assets/580478818_808493695365896_172975829185285327_n.jpg";
+import fotoCarlaRamos from "../assets/CarlaRamos (2).png";
+import fotoIanCorroto from "../assets/IANCorroto.png";
+import fotoDanae from "../assets/danae.png";
+import fotoIvan from "../assets/Ivan.png";
+import fotoCarolina from "../assets/Carolina.png";
+import fotoJudokaDesconocido from "../assets/Judokadesconocido.png";
+import fotoMarcos from "../assets/Marcos.png";
+import fotoAlexCorroto from "../assets/AlexCorroto.png";
+import fotoEkaitz from "../assets/Ekaitz.png";
 ---
 
 <PageLayout
-	title="Equipo de competición"
-	description="Equipo de competición del Club de Judo Galápagos — judokas, categorías y palmarés."
+	title="Nuestro equipo"
+	description="Equipo del Club de Judo Galápagos: judokas de todas las edades y niveles."
 >
 	<div class="page-shell page-shell--wide">
 		<header class="page-hero">
-			<p class="page-hero__eyebrow">Competición</p>
-			<h1 class="page-hero__title">Equipo de competición</h1>
+			<p class="page-hero__eyebrow">El equipo</p>
+			<h1 class="page-hero__title">Nuestro equipo</h1>
 			<p class="page-hero__lead">
-				Texto de ejemplo para la cabecera. Sustituye estos bloques por datos reales (judokas, categorías,
-				palmarés e imágenes) cuando los tengáis listos.
+				Conoce a quienes entrenan con nosotros: judokas de todas las edades y niveles, desde cinturón blanco
+				hasta quienes compiten.
 			</p>
 		</header>
 
 		<figure class="comp-hero">
 			<Image
 				src={fotoEquipoCompeticion}
-				alt=""
+				alt="Grupo de judokas del club en el tatami"
 				class="comp-hero__img"
 				sizes="(min-width: 880px) min(920px, 92vw), 100vw"
 				loading="eager"
@@ -36,47 +44,148 @@ import fotoJudokaEjemplo from "../assets/580478818_808493695365896_1729758291852
 			<MasterTeaser />
 		</div>
 
-		<div class="comp-grid">
-			<article class="comp-card page-block">
-				<Image
-					src={fotoJudokaEjemplo}
-					alt=""
-					class="comp-card__photo"
-					width={400}
-					height={280}
-					sizes="(min-width: 520px) 280px, 100vw"
-					loading="lazy"
-					decoding="async"
-				/>
-				<h2>Judoka 1</h2>
-				<p><strong>Palmarés (ejemplo genérico):</strong></p>
-				<ul class="page-list">
-					<li>Competición de ejemplo — medalla de ejemplo</li>
-					<li>Trofeo de ejemplo — resultado de ejemplo</li>
-				</ul>
-				<p class="comp-card__note">Texto de ejemplo para enlaces o notas adicionales.</p>
-			</article>
-
-			<article class="comp-card page-block">
-				<Image
-					src={fotoJudokaEjemplo}
-					alt=""
-					class="comp-card__photo"
-					width={400}
-					height={280}
-					sizes="(min-width: 520px) 280px, 100vw"
-					loading="lazy"
-					decoding="async"
-				/>
-				<h2>Judoka 2</h2>
-				<p><strong>Palmarés (ejemplo genérico):</strong></p>
-				<ul class="page-list">
-					<li>Campeonato de ejemplo — participación</li>
-					<li>Actividad de ejemplo — convocatoria</li>
-				</ul>
-				<p class="comp-card__note">Texto de ejemplo para enlaces o notas adicionales.</p>
-			</article>
-		</div>
+		<section id="nuestros-judokas" class="comp-judokas" aria-labelledby="judokas-title">
+			<header class="comp-judokas__head">
+				<h2 id="judokas-title" class="comp-judokas__title">Nuestros Judokas</h2>
+			</header>
+			<ul class="comp-grid">
+				<li class="comp-card">
+					<div class="comp-card__frame">
+						<Image
+							src={fotoCarlaRamos}
+							alt="Carla Ramos"
+							class="comp-card__photo"
+							width={480}
+							height={640}
+							sizes="(min-width: 520px) 320px, 88vw"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<p class="comp-card__name">Carla Ramos</p>
+				</li>
+				<li class="comp-card">
+					<div class="comp-card__frame">
+						<Image
+							src={fotoIanCorroto}
+							alt="Ian Corroto"
+							class="comp-card__photo"
+							width={480}
+							height={640}
+							sizes="(min-width: 520px) 320px, 88vw"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<p class="comp-card__name">Ian Corroto</p>
+				</li>
+				<li class="comp-card">
+					<div class="comp-card__frame">
+						<Image
+							src={fotoDanae}
+							alt="Danae"
+							class="comp-card__photo"
+							width={480}
+							height={640}
+							sizes="(min-width: 520px) 320px, 88vw"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<p class="comp-card__name">Danae</p>
+				</li>
+				<li class="comp-card">
+					<div class="comp-card__frame">
+						<Image
+							src={fotoIvan}
+							alt="Ivan"
+							class="comp-card__photo"
+							width={480}
+							height={640}
+							sizes="(min-width: 520px) 320px, 88vw"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<p class="comp-card__name">Ivan</p>
+				</li>
+				<li class="comp-card">
+					<div class="comp-card__frame">
+						<Image
+							src={fotoCarolina}
+							alt="Carolina"
+							class="comp-card__photo"
+							width={480}
+							height={640}
+							sizes="(min-width: 520px) 320px, 88vw"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<p class="comp-card__name">Carolina</p>
+				</li>
+				<li class="comp-card">
+					<div class="comp-card__frame">
+						<Image
+							src={fotoJudokaDesconocido}
+							alt="Judoka del club — nombre por confirmar"
+							class="comp-card__photo"
+							width={480}
+							height={640}
+							sizes="(min-width: 520px) 320px, 88vw"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<p class="comp-card__name">Desconocido</p>
+				</li>
+				<li class="comp-card">
+					<div class="comp-card__frame">
+						<Image
+							src={fotoMarcos}
+							alt="Marcos Mendiola"
+							class="comp-card__photo"
+							width={480}
+							height={640}
+							sizes="(min-width: 520px) 320px, 88vw"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<p class="comp-card__name">Marcos Mendiola</p>
+				</li>
+				<li class="comp-card">
+					<div class="comp-card__frame">
+						<Image
+							src={fotoAlexCorroto}
+							alt="Alex Corroto"
+							class="comp-card__photo"
+							width={480}
+							height={640}
+							sizes="(min-width: 520px) 320px, 88vw"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<p class="comp-card__name">Alex Corroto</p>
+				</li>
+				<li class="comp-card">
+					<div class="comp-card__frame">
+						<Image
+							src={fotoEkaitz}
+							alt="Ekaitz"
+							class="comp-card__photo"
+							width={480}
+							height={640}
+							sizes="(min-width: 520px) 320px, 88vw"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<p class="comp-card__name">Ekaitz</p>
+				</li>
+			</ul>
+		</section>
 	</div>
 </PageLayout>
 
@@ -96,42 +205,90 @@ import fotoJudokaEjemplo from "../assets/580478818_808493695365896_1729758291852
 		vertical-align: middle;
 	}
 
+	.comp-master-wrap {
+		display: flex;
+		justify-content: center;
+	}
+
 	.comp-master-wrap :global(.master) {
+		width: 100%;
+		max-width: 360px;
 		padding-inline: 0;
 		border-top: none;
 		margin-top: var(--space-md);
 		padding-top: var(--space-xl);
 	}
 
+	.comp-judokas {
+		margin-top: var(--space-2xl);
+		padding-top: var(--space-xl);
+		border-top: 1px solid var(--border-subtle);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-lg);
+	}
+
+	.comp-judokas__head {
+		width: 100%;
+		max-width: 720px;
+		text-align: center;
+	}
+
+	.comp-judokas__title {
+		margin: 0;
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: clamp(1.75rem, 4vw, 2.5rem);
+		line-height: 1.08;
+		letter-spacing: -0.028em;
+	}
+
 	.comp-grid {
+		list-style: none;
+		margin: 0;
+		padding: 0;
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 		gap: var(--space-md);
+		width: 100%;
+		max-width: 720px;
+		justify-items: center;
 	}
 
 	.comp-card {
+		width: 100%;
+		max-width: 320px;
 		padding: var(--space-md);
 		border-radius: var(--radius-lg);
 		border: 1px solid var(--border-subtle);
 		background: var(--cal-card-bg);
-		margin-bottom: 0 !important;
+		text-align: center;
+	}
+
+	.comp-card__frame {
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		margin-bottom: var(--space-md);
+		border: 1px solid var(--border-subtle);
+		background: var(--bg-deep);
 	}
 
 	.comp-card__photo {
 		display: block;
 		width: 100%;
 		height: auto;
-		border-radius: var(--radius-md);
-		object-fit: cover;
-		aspect-ratio: 4 / 3;
-		margin-bottom: var(--space-md);
-		border: 1px solid var(--border-subtle);
+		max-width: none;
+		object-fit: contain;
+		object-position: center center;
 	}
 
-	.comp-card__note {
-		margin: var(--space-sm) 0 0;
-		font-size: 0.92rem;
-		color: var(--text-muted);
-		line-height: 1.5;
+	.comp-card__name {
+		margin: 0;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 1.15rem;
+		line-height: 1.2;
+		letter-spacing: -0.02em;
 	}
 </style>

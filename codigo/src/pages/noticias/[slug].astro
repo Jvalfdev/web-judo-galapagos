@@ -3,7 +3,8 @@ import PageLayout from "../../layouts/PageLayout.astro";
 import { Image } from "astro:assets";
 import { getEntradaCalendarioPorId } from "../../data/calendario";
 import { etiquetaTipoNoticia, getNoticiaBySlug, noticias } from "../../data/noticias";
-import imgEntregaCinturon from "../../assets/entrega-cinturon.jpg";
+
+export const dynamicParams = true;
 
 export function getStaticPaths() {
 	return noticias.map((n) => ({ params: { slug: n.slug } }));
@@ -36,8 +37,8 @@ function formatDate(iso: string) {
 		</p>
 		<figure class="article-figure">
 			<Image
-				src={imgEntregaCinturon}
-				alt="Ceremonia de entrega de cinturón del club"
+				src={item.image}
+				alt={item.imageAlt}
 				class="article-figure__img"
 				sizes="(min-width: 880px) min(720px, 70vw), 100vw"
 				loading="eager"
@@ -60,6 +61,23 @@ function formatDate(iso: string) {
 				<p>{p}</p>
 			))}
 		</div>
+		{item.gallery && item.gallery.length > 0 && (
+			<div class="article-gallery" aria-label="Galería de fotos">
+				{item.gallery.map((photo) => (
+					<figure class="article-gallery__item">
+						<Image
+							src={photo.image}
+							alt={photo.alt}
+							class="article-gallery__img"
+							fit="contain"
+							sizes="(min-width: 640px) min(360px, 45vw), 100vw"
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+				))}
+			</div>
+		)}
 	</article>
 </PageLayout>
 
@@ -164,5 +182,32 @@ function formatDate(iso: string) {
 
 	.article-body p:last-child {
 		margin-bottom: 0;
+	}
+
+	.article-gallery {
+		display: grid;
+		gap: var(--space-md);
+		margin-top: var(--space-lg);
+	}
+
+	@media (min-width: 640px) {
+		.article-gallery {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	.article-gallery__item {
+		margin: 0;
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		border: 1px solid var(--border-subtle);
+		background: var(--bg-deep);
+	}
+
+	.article-gallery__img {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: contain;
 	}
 </style>
