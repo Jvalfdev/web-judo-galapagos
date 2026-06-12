@@ -5,22 +5,23 @@ import heroVideo from "../../assets/hero-judo-galapagos.mp4";
 const waHref = urlWhatsApp();
 ---
 
-<div class="hero__video-wrap" aria-hidden="true">
-	<video
-		class="hero__video"
-		autoplay
-		muted
-		loop
-		playsinline
-		preload="auto"
-		tabindex="-1"
-	>
-		<source src={heroVideo} type="video/mp4" />
-	</video>
-	<div class="hero__video-overlay"></div>
-</div>
+<div class="hero-stage">
+	<div class="hero__video-wrap" aria-hidden="true">
+		<video
+			class="hero__video"
+			autoplay
+			muted
+			loop
+			playsinline
+			preload="auto"
+			tabindex="-1"
+		>
+			<source src={heroVideo} type="video/mp4" />
+		</video>
+		<div class="hero__video-overlay"></div>
+	</div>
 
-<section class="hero" aria-labelledby="hero-title">
+	<section class="hero" aria-labelledby="hero-title">
 	<div class="hero__bg" aria-hidden="true">
 		<div class="hero__mesh"></div>
 		<div class="hero__grid"></div>
@@ -43,9 +44,16 @@ const waHref = urlWhatsApp();
 			</div>
 		</div>
 	</div>
-</section>
+	</section>
+</div>
 
 <style>
+	.hero-stage {
+		position: relative;
+		min-height: 100dvh;
+		overflow: hidden;
+	}
+
 	.hero__video-wrap {
 		position: fixed;
 		inset: 0;
@@ -53,6 +61,14 @@ const waHref = urlWhatsApp();
 		height: 100dvh;
 		overflow: hidden;
 		pointer-events: none;
+	}
+
+	@media (min-width: 880px) {
+		.hero__video-wrap {
+			position: absolute;
+			inset: 0;
+			height: 100%;
+		}
 	}
 
 	.hero__video {

@@ -172,9 +172,35 @@ const links = [
 	}
 
 	@media (min-width: 880px) {
+		.header {
+			height: 5rem;
+			padding-inline: clamp(1.75rem, 4vw, 4rem);
+			gap: 1rem;
+		}
+
+		.brand {
+			font-size: 1.22rem;
+		}
+
+		.brand__logo {
+			width: 44px;
+			height: 44px;
+		}
+
+		.brand__tagline {
+			font-size: 0.72rem;
+		}
+
 		.nav--desktop .nav__list {
 			display: flex;
 			align-items: center;
+			gap: 0.2rem;
+		}
+
+		.nav__link {
+			padding: 0.58rem 1.05rem;
+			font-size: 1.02rem;
+			font-weight: 600;
 		}
 	}
 
