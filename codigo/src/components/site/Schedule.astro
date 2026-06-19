@@ -209,4 +209,16 @@
 		}
 	}
 
-	@media (max-width: 879px) 
+	@media (max-width: 879px) {
+		.schedule__cell[data-day]::before {
+			content: attr(data-day);
+			display: block;
+			font-size: 0.68rem;
+			font-weight: 700;
+			letter-spacing: 0.055em;
+			text-transform: uppercase;
+			color: var(--text-muted);
+			margin-bottom: 0.15rem;
+		}
+	}
+</style>
