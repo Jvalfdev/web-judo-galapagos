@@ -6,7 +6,7 @@ export const TELEFONO_CLUB = "34636754419";
 
 /** Mensaje opcional que se abre ya escrito en WhatsApp (el usuario puede borrarlo). */
 export const WHATSAPP_TEXTO_PRELLENADO =
-	"Hola, escribo desde la web del Club de Judo Galápagos.";
+	"Hola, escribo desde la web de la Escuela de Judo Galápagos.";
 
 /** Para `<a href="tel:...">`. */
 export function telefonoHrefTel(): string {

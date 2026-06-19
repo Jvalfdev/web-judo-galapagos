@@ -101,7 +101,7 @@ export const noticias: Noticia[] = [
 		imageAlt: "Ceremonia de entrega de cinturón del club",
 		eventoCalendarioId: "ceremonia-cinturon-2026",
 		paragraphs: [
-			"El martes 16 de junio el Club de Judo Galápagos celebra la ceremonia de entrega de cinturón, un momento especial para reconocer el esfuerzo y la progresión de nuestros judokas.",
+			"El martes 16 de junio la Escuela de Judo Galápagos celebra la ceremonia de entrega de cinturón, un momento especial para reconocer el esfuerzo y la progresión de nuestros judokas.",
 			"El acto tendrá lugar en El Silo. Invitamos a familias y amigos del club a acompañarnos. El horario aún no está confirmado; os lo comunicaremos en cuanto lo tengamos a través de los canales habituales del club.",
 		],
 	},
