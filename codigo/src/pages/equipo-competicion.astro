@@ -13,6 +13,7 @@ import fotoRoberto from "../assets/Roberto.png";
 import fotoMarcos from "../assets/Marcos.png";
 import fotoAlexCorroto from "../assets/AlexCorroto.png";
 import fotoEkaitz from "../assets/Ekaitz.png";
+import fotoIrene from "../assets/Irene.png";
 ---
 
 <PageLayout
@@ -184,8 +185,23 @@ import fotoEkaitz from "../assets/Ekaitz.png";
 						/>
 					</div>
 					<p class="comp-card__name">Ekaitz Castro</p>
-				</li>
-			</ul>
+					</li>
+					<li class="comp-card">
+						<div class="comp-card__frame">
+							<Image
+								src={fotoIrene}
+								alt="Irene"
+								class="comp-card__photo"
+								width={480}
+								height={640}
+								sizes="(min-width: 520px) 320px, 88vw"
+								loading="lazy"
+								decoding="async"
+							/>
+						</div>
+						<p class="comp-card__name">Irene</p>
+					</li>
+				</ul>
 		</section>
 	</div>
 </PageLayout>
